@@ -1,8 +1,0 @@
-//
-// Created by Yotam Manne on 23/07/2018.
-//
-
-#ifndef SUDOKU_SOFTWARE_PROJECT_AUX_H
-#define SUDOKU_SOFTWARE_PROJECT_AUX_H
-
-#endif //SUDOKU_SOFTWARE_PROJECT_AUX_H
