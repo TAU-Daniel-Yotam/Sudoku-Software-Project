@@ -13,14 +13,18 @@ typedef struct Cell{
     int isPlayerMove;
 }Cell;
 
-typedef struct  Game{
-    int row,line;
+/**
+ * mode: 0=init, 1=solve, 2=edit
+ */
+typedef struct Game{
+    int column,row;
     Cell ** board;
     int mode;
     int markError;
     List * list;
-
 }Game;
+
+
 #define UNTITLED7_GAME_H
 
 #endif //UNTITLED7_GAME_H

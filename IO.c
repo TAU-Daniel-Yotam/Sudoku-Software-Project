@@ -1,41 +1,42 @@
 
 #include "IO.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 Game *readFromFile(FILE * file) {
-    int a, b, num;
+    int a, b, num,i;
     Cell **index;
-    fscanf_s(file, "%d", &a);
-    fscanf_s(file, "%d", &b);
+    fscanf(file, "%d", &a);
+    fscanf(file, "%d", &b);
     index=calloc(a*b, sizeof(Cell *));
-    for(int i=0;i<a*b;i++){
+    for(i=0;i<a*b;i++){
         index[i]=calloc(a*b, sizeof(Cell));
     }
     Game *game = calloc(1, sizeof(Game));
-    game->row = b;
-    game->line = a;
+    game->column = b;
+    game->row = a;
     game->board=index;
-    for(int i=0;i<a*b;i++){
+    for(i=0;i<a*b;i++){
         for (int j=0;j<a*b;j++){
-            fscanf_s(file, "%d", &num);
+            fscanf(file, "%d", &num);
             game->board[i][j] .value=num;
             if(getc(file)=='.')
                 game->board[i][j].isFixed=1;
         }
     }
     return game;
-};
+}
+
 int writeToFile(Game * game,FILE * file) {
     Cell **index;
-    fprintf(file, "%d ", game->line);
-    fprintf(file, "%d\n", game->row);
+    int i,j;
+    fprintf(file, "%d ", game->row);
+    fprintf(file, "%d\n", game->column);
     index = game->board;
-    for (int i = 0; i < game->line * game->row ;i++){
-        for(int j=0;j<game->line*game->row;j++){
+    for (i = 0; i < game->row * game->column ;i++){
+        for(j=0;j<game->row*game->column;j++){
             fprintf(file, "%d", index[i][j]);
             if (index[i][j].isFixed == 1)
                 fprintf(file,".");
-            if(j==(game->line*game->line-1))
+            if(j==(game->row*game->row-1))
                 fprintf(file,"\n");
             else
                 fprintf(file,"\t");
