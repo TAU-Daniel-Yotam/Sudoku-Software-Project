@@ -113,7 +113,7 @@ int parseCommand(Game* game, char*command, Command* parsedCommand){
                 parsedCommand->intArgs=NULL;
                 parsedCommand->strArg=NULL;
             }
-            else if(!strcmp(word,"exit") && (game->mode==1 || game->mode==2)){
+            else if(!strcmp(word,"exit")){
                 parsedCommand->type=15;
                 parsedCommand->numArgs=0;
                 parsedCommand->saveToList=0;
