@@ -12,11 +12,11 @@ void printDashes(int column,int row){
 void printBoard(Game * game) {
     int i, j;
     Cell index;
-    for (i = 0; i < game->column * game->row; i++) {
-        if (!(i % game->column))
-            printDashes(game->column, game->row);
-        for (j = 0; j < game->column * game->row; j++) {
-            if (!(j % game->row))
+    for (i = 0; i < game->columns * game->rows; i++) {
+        if (!(i % game->columns))
+            printDashes(game->columns, game->rows);
+        for (j = 0; j < game->columns * game->rows; j++) {
+            if (!(j % game->rows))
                 printf("|");
             index = game->board[i][j];
             if (index.isFixed) {
@@ -35,7 +35,7 @@ void printBoard(Game * game) {
         }
         printf("|\n");
     }
-    printDashes(game->column, game->row);
+    printDashes(game->columns, game->rows);
 }
 
 int arrComp(int*a1, int size1, int*a2, int size2){

@@ -3,9 +3,6 @@
 #ifndef SUDOKU_SOFTWARE_PROJECT_GAME_H
 #include "list.h"
 
-
-#ifndef UNTITLED7_GAME_H
-
 typedef struct Cell{
     int value;
     int isFixed;
@@ -17,7 +14,7 @@ typedef struct Cell{
  * mode: 0=init, 1=solve, 2=edit
  */
 typedef struct Game{
-    int column,row;
+    int columns,rows; /*num of rows and columns in a single block*/
     Cell ** board;
     int mode;
     int markError;
@@ -25,9 +22,6 @@ typedef struct Game{
 }Game;
 
 
-#define UNTITLED7_GAME_H
-
-#endif //UNTITLED7_GAME_H
 
 #define SUDOKU_SOFTWARE_PROJECT_GAME_H
 

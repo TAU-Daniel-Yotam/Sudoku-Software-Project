@@ -18,6 +18,10 @@ int getInput(char* command, int size){
 int parseCommand(Game* game, char*command, Command* parsedCommand){
     char* word;
     int i=0;
+    if(strlen(command)>256){
+        parsedCommand->type=-1;
+        return -1;
+    }
     word=strtok(command," \t\r\n");
     while(word!=NULL){
         if(i==0){

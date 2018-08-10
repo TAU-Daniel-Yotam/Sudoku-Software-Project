@@ -3,5 +3,7 @@
 //
 
 #include "Exceptions.h"
+enum Exception{
 
+};
 

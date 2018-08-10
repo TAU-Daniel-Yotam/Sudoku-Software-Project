@@ -411,12 +411,6 @@ void testParser(){
     parseCommand(&g,command45,&c);
     if(!compareCommand(&c,&testExit)) printf("test45 failed\n");
 
-    g.mode=0;
-    testExit.type=-1;
-    initCommand(&c,a);
-    char command46[256]="exit";
-    parseCommand(&g,command46,&c);
-    if(!compareCommand(&c,&testExit)) printf("test46 failed\n");
 }
 
 int compareCommand(Command* c1, Command*c2){

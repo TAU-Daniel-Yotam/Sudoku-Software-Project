@@ -28,15 +28,15 @@ Game *readFromFile(FILE * file) {
 int writeToFile(Game * game,FILE * file) {
     Cell **index;
     int i,j;
-    fprintf(file, "%d ", game->row);
-    fprintf(file, "%d\n", game->column);
+    fprintf(file, "%d ", game->rows);
+    fprintf(file, "%d\n", game->columns);
     index = game->board;
-    for (i = 0; i < game->row * game->column ;i++){
-        for(j=0;j<game->row*game->column;j++){
+    for (i = 0; i < game->rows * game->columns ;i++){
+        for(j=0;j<game->rows*game->columns;j++){
             fprintf(file, "%d", index[i][j]);
             if (index[i][j].isFixed == 1)
                 fprintf(file,".");
-            if(j==(game->row*game->row-1))
+            if(j==(game->rows*game->rows-1))
                 fprintf(file,"\n");
             else
                 fprintf(file,"\t");
