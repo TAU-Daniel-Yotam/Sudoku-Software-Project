@@ -85,6 +85,7 @@ int edit(char * filePath){
     }
     Game * game=readFromFile(file);
     game->markError=1;
+    fclose(file);
 }
 
 /*change and then move list pointer */
@@ -129,7 +130,7 @@ int redo(Game* game) {
     return 1;
 }
 
-int saveX(Game * game,char * path){
+int save(Game * game,char * path){
     FILE * file;
     fopen_s(&file,path,"w");
     if(file==NULL){
@@ -141,7 +142,8 @@ int saveX(Game * game,char * path){
     if(game->mode==1&&!validate(game))
         printf("Error: board validation failed\n");
 
-}
+
+    fclose(file);
 }
 int checkError(Game * game){
     int sizeBoard=0;
