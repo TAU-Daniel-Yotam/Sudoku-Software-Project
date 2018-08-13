@@ -22,7 +22,7 @@ typedef struct Game{
 }Game;
 
 
-
+int reset(Game * game);
 #define SUDOKU_SOFTWARE_PROJECT_GAME_H
 
 #endif //SUDOKU_SOFTWARE_PROJECT_GAME_H

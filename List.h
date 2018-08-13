@@ -17,8 +17,10 @@ typedef struct List{
 Node * createNode(int * data);
 List * createlist();
 int printData(int * data);
-int deleteAtPosition(List *list,int pos);
+int deleteAtPosition(List *list,Node * node);
 int insertAtHead(List * list,int * data);
+int deleteAfterSet(List *list,Node * node);
+int delete2(List  *list,Node * node);
 int printList(List * list);
 int movePointer(List * list,int move);
 

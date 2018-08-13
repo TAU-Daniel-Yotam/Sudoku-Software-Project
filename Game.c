@@ -1,8 +1,12 @@
 //
 // Created by Yotam Manne on 23/07/2018.
 //
-
+#include <stdlib.h>
 #include "Game.h"
+#include "stdio.h"
+#include "IO.h"
+
+
 
 int mark_errors(Game* game, int arg){
     if(arg!=0 && arg!=1){
@@ -26,9 +30,6 @@ int set(Game* game,int x,int y,int value){
     game->board[x][y].value=value;
     if(checkValid(game,x,y,value)) game->board[x][y].isValid=1;
     else game->board[x][y].isValid=0;
-
-    /*add code to remove the list nodes beyond this move and add this move to the list*/
-
 }
 
 int hint(Game* game, int x, int y){
@@ -69,4 +70,61 @@ int checkRowColumn(Game* game, int x, int y, int value) {
         if(i!=x && game->board[i][y].value==value) return 0;
     }
     return 1;
+}
+
+int edit(char * filePath){
+    FILE * file;
+    fopen_s(&file,filePath,"r");
+    if(file==NULL){
+        "...";
+    }
+    Game * game=readFromFile(file);
+    game->markError=1;
+}
+int undo(Game * game){
+    char from;
+    char to;
+    int * data;
+    if(!game->list->length||game->list->pointer==NULL){
+        return  0;
+}
+data=game->list->pointer->data;
+    data[3]==0? from='_':from='0';
+    data[2]==0? to='_':to='0';
+set(game,data[0],data[1],data[2]);
+game->list->pointer=game->list->pointer->previous;
+printf("Undo %d,%d: from %c to %c\n",data[0],data[1],from,to);
+return 1;
+}
+
+int saveX(Game * game,char * path){
+    FILE * file;
+    fopen_s(&file,path,"w");
+    if(file==NULL){
+        ",,";
+    }
+    if(game->mode==1&&!checkError(game)) {
+        printf("Error: board contains erroneous values\n");
+    }
+    if(game->mode==1&&!validate(game))
+        printf("Error: board validation failed\n");
+
+}
+}
+int checkError(Game * game){
+    int sizeBoard=0;
+    for(Cell * cell=game->board[0];sizeBoard<game->columns*game->rows*game->columns*game->rows;sizeBoard++,cell++){
+        if(!cell->isValid){
+            return 0;
+        }
+    }
+    return 1;
+
+}
+int reset(Game * game){
+    while(game->list->length!=0){
+        undo(game);
+        deleteAtPosition(game->list,game->list->length-1);
+    }
+    printf("Board reset\n");
 }

@@ -26,6 +26,7 @@ int insertAtHead(List * list,int * data){
     if(list->length==1) {
         list->tail = node;
     }
+    list->pointer=list->head;
     return 1;
 
 }
@@ -48,21 +49,38 @@ int deleteAtPosition(List *list,int pos){
         list->tail=node->previous;
     }
     list->length--;
+    return 1;
+}
+int deleteAfterSet(List *list,Node * node){
+    Node * temp=node->next;
+    if(node->next!=NULL){
+        node->next=node->next->next;
+        if(node->next!=NULL)
+            node->next->previous=node;
+    }
+    free(temp);
+    list->length--;
 }
 
+int delete2(List *list,Node * node){
+    while(node->next!=NULL){
+        deleteAfterSet(list,node);
+    }
+}
 
 int printList(List * list){
     for(Node * node=list->head;node!=NULL;node=node->next){
         printData(node->data);
         printf("\t");
     }
+    return 1;
 }
 int printData(int * data){
     int *g=data;
-    for(int r=0;r<3;r++,g++){
+    for(int r=0;r<4;r++,g++){
         printf("%d",*g);
     }
-
+return 1;
 }
 
 int movePointer(List * list,int move) {
@@ -71,5 +89,17 @@ int movePointer(List * list,int move) {
 
     else
         list->pointer = list->pointer->previous;
+    return 1;
+}
+
+int addAtLast(List * list,int * data){
+    if(list->pointer!=list->tail){
+        delete2(list,list->pointer);
+    }
+    Node *  node=createNode(data);
+    list->pointer->next=node;
+    list->tail=node;
+    list->tail=node;
+    list->length++;
     return 1;
 }
