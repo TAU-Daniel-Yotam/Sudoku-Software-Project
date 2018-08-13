@@ -2,6 +2,10 @@
 
 #ifndef SUDOKU_SOFTWARE_PROJECT_GAME_H
 #include "list.h"
+#include "stdio.h"
+#include "IO.h"
+#include <stdlib.h>
+
 
 typedef struct Cell{
     int value;

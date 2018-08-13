@@ -9,14 +9,14 @@ List * createlist(){
     return list;
 }
 
-Node  * createNode(int * data){
+Node  * createNode(int ** data){
     Node * node=calloc(1, sizeof(Node));
     node->data=data;
     node->previous=NULL;
     node->next=NULL;
     return node;
 }
-int insertAtHead(List * list,int * data){
+int insertAtHead(List * list,int ** data){
     Node * node =createNode(data);
     node->next=list->head;
     if(node->next!=NULL)
@@ -75,7 +75,7 @@ int printList(List * list){
     }
     return 1;
 }
-int printData(int * data){
+int printData(int ** data){
     int *g=data;
     for(int r=0;r<4;r++,g++){
         printf("%d",*g);
@@ -83,8 +83,8 @@ int printData(int * data){
 return 1;
 }
 
-int movePointer(List * list,int move) {
-    if (move)
+int movePointer(List * list,int isNext) {
+    if (isNext)
         list->pointer = list->pointer->next;
 
     else
@@ -92,7 +92,7 @@ int movePointer(List * list,int move) {
     return 1;
 }
 
-int addAtLast(List * list,int * data){
+int addLast(List * list,int ** data){
     if(list->pointer!=list->tail){
         delete2(list,list->pointer);
     }
