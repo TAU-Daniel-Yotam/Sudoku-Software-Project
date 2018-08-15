@@ -83,82 +83,145 @@ int edit(char * filePath){
     if(file==NULL){
         abort();
     }
-    Game * game=readFromFile(file);
-    game->markError=1;
+/*    Game * game=readFromFile(file);*/
+   // game->markError=1;
     fclose(file);
 }
 
 /*change and then move list pointer */
-int undo(Game * game){
-    char from;
-    char to;
+int undo(Game * game) {
     int i;
-    int * move;
-    if(!game->list->length||game->list->pointer==NULL){
+    int *move;
+
+    if (!game->list->length || game->list->pointer == NULL) {
         /*no moves to undo error*/
-        return  0;
+        return 0;
     }
-    for(i=0;i<game->list->pointer->dataElements;i++) {
-        move=game->list->pointer->data[i];
-        move[2]==0? from='_':from=move[2]+'0';
-        move[3]==0? to='_':to=move[3]+'0';
-        game->board[move[0]][move[1]].value=move[2];
-        printf("Undo %d,%d: from %c to %c\n",move[0],move[1],from,to);
+    for (i = 0; i < game->list->pointer->size; i++) {
+        move = game->list->pointer->data[i];
+      game->board[move[0]][move[1]].value = move[2];
+        printf("Undo %d,%d: from ",move[0], move[1]);
+        if (move[3])
+            printf("%d to ", move[3]);
+        else
+            printf("_ to ");
+        if (move[2])
+            printf("%d\n", move[2]);
+        else
+            printf("_\n");
     }
-    game->list->pointer=game->list->pointer->previous;
+    game->list->pointer = game->list->pointer->previous;
     return 1;
 }
 
 /*move list pointer and then change*/
-int redo(Game* game) {
-    char from;
-    char to;
-    int i;
-    int * move;
-    if(!game->list->length||game->list->pointer->next==NULL){
-        /*no moves to undo error*/
-        return  0;
-    }
-    game->list->pointer=game->list->pointer->next;
-    for(i=0;i<game->list->pointer->dataElements;i++) {
-        move=game->list->pointer->data[i];
-        move[2]==0? from='_':from=move[2]+'0';
-        move[3]==0? to='_':to=move[3]+'0';
-        game->board[move[0]][move[1]].value=move[3];
-        printf("Redo %d,%d: from %c to %c\n",move[0],move[1],to,from);
-    }
-    return 1;
-}
-
-int save(Game * game,char * path){
-    FILE * file;
-    fopen_s(&file,path,"w");
-    if(file==NULL){
-        ",,";
-    }
-    if(game->mode==1&&!checkError(game)) {
-        printf("Error: board contains erroneous values\n");
-    }
-    if(game->mode==1&&!validate(game))
-        printf("Error: board validation failed\n");
-
-
-    fclose(file);
-}
-int checkError(Game * game){
-    int sizeBoard=0;
-    for(Cell * cell=game->board[0];sizeBoard<game->columns*game->rows*game->columns*game->rows;sizeBoard++,cell++){
-        if(!cell->isValid){
+    int redo(Game *game) {
+        char from;
+        char to;
+        int i;
+        int *move;
+        if (!game->list->length || game->list->pointer->next == NULL) {
+            /*no moves to undo error*/
             return 0;
         }
+        game->list->pointer = game->list->pointer->next;
+        for (i = 0; i < game->list->pointer->size; i++) {
+            move = game->list->pointer->data[i];
+            from = (move[2] == 0 ? '_' : move[2] + '0');
+            to = (move[3] == 0 ? '_' : move[3] + '0');
+            game->board[move[0]][move[1]].value = move[3];
+            printf("Redo %d,%d: from %c to %c\n", move[0], move[1], to, from);
+        }
+        return 1;
     }
-    return 1;
 
-}
-int reset(Game * game){
-    while(game->list->length!=0){
-        undo(game);
-        deleteAtPosition(game->list,game->list->length-1);
+    int save(Game *game, char *path) {
+        FILE *file;
+        fopen_s(&file, path, "w");
+        if (file == NULL) {
+            ",,";
+        }
+        if (game->mode == 1 && !checkError(game)) {
+            printf("Error: board contains erroneous values\n");
+        }
+        if (game->mode == 1 && !validate(game))
+            printf("Error: board validation failed\n");
+
+
+        fclose(file);
     }
-    printf("Board reset\n");
-}
+    int validate(Game *game) {
+    }
+
+    int checkError(Game *game) {
+        Cell *cell;
+        int sizeBoard = 0;
+        for (cell = game->board[0];
+             sizeBoard < game->columns * game->rows * game->columns * game->rows; sizeBoard++, cell++) {
+            if (!cell->isValid) {
+                return 0;
+            }
+        }
+        return 1;
+
+    }
+    int reset(Game *game) {
+        while (game->list->length != 0) {
+            undo(game);
+            deleteAtPosition(game->list, game->list->length - 1);
+        }
+        printf("Board reset\n");
+    }
+    Game *readFromFile(FILE *file) {
+        int a, b, num, i, j;
+        Cell **index;
+        fscanf(file, "%d", &a);
+        fscanf(file, "%d", &b);
+        index = calloc(a * b, sizeof(Cell *));
+        for (i = 0; i < a * b; i++) {
+            index[i] = calloc(a * b, sizeof(Cell));
+        }
+        Game *game = calloc(1, sizeof(Game));
+        game->columns = b;
+        game->rows = a;
+        game->board = index;
+        for (i = 0; i < a * b; i++) {
+            for (j = 0; j < a * b; j++) {
+                fscanf(file, "%d", &num);
+                game->board[i][j].value = num;
+                if (getc(file) == '.')
+                    game->board[i][j].isFixed = 1;
+            }
+        }
+        return game;
+    }
+
+    int writeToFile(Game *game, FILE *file) {
+        Cell **index;
+        int i, j;
+        fprintf(file, "%d ", game->rows);
+        fprintf(file, "%d\n", game->columns);
+        index = game->board;
+        for (i = 0; i < game->rows * game->columns; i++) {
+            for (j = 0; j < game->rows * game->columns; j++) {
+                fprintf(file, "%d", index[i][j]);
+                if (index[i][j].isFixed == 1)
+                    fprintf(file, ".");
+                if (j == (game->rows * game->columns - 1))
+                    fprintf(file, "\n");
+                else
+                    fprintf(file, "\t");
+
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+

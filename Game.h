@@ -1,12 +1,10 @@
 
-
-#ifndef SUDOKU_SOFTWARE_PROJECT_GAME_H
 #include "list.h"
 #include "stdio.h"
-#include "IO.h"
 #include <stdlib.h>
 
-
+#ifndef SUDOKU_SOFTWARE_PROJECT_GAME_H
+#include "IO.h"
 typedef struct Cell{
     int value;
     int isFixed;
@@ -14,7 +12,7 @@ typedef struct Cell{
     int isPlayerMove;
 }Cell;
 
-/**
+/*
  * mode: 0=init, 1=solve, 2=edit
  */
 typedef struct Game{
@@ -28,5 +26,7 @@ typedef struct Game{
 
 int reset(Game * game);
 #define SUDOKU_SOFTWARE_PROJECT_GAME_H
-
+Game * readFromFile(FILE * file);
+int undo(Game * game);
+int  writeToFile(Game * game,FILE * file);
 #endif //SUDOKU_SOFTWARE_PROJECT_GAME_H
