@@ -81,7 +81,7 @@ int edit(char * filePath){
     FILE * file;
     fopen_s(&file,filePath,"r");
     if(file==NULL){
-        "...";
+        abort();
     }
     Game * game=readFromFile(file);
     game->markError=1;

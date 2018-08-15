@@ -21,7 +21,7 @@ void printBoard(Game * game) {
             index = game->board[i][j];
             if (index.isFixed) {
                 printf(" %2d.", index.value);
-            } else if (!index.isValid && game->markError)
+            } else if (!index.isValid && (game->markError||game->mode==2))
                 printf(" %2d*", index.value);
             else {
 

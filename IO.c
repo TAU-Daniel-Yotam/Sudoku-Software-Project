@@ -36,7 +36,7 @@ int writeToFile(Game * game,FILE * file) {
             fprintf(file, "%d", index[i][j]);
             if (index[i][j].isFixed == 1)
                 fprintf(file,".");
-            if(j==(game->rows*game->rows-1))
+            if(j==(game->rows*game->columns-1))
                 fprintf(file,"\n");
             else
                 fprintf(file,"\t");
