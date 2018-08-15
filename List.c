@@ -22,7 +22,7 @@ Node  * createNode(int ** data,int size){
     Node * node =createNode(data);
     node->next=list->head;
     if(node->next!=NULL)
-        node->next->previous=node;
+'        node->next->previous=node;
     list->head=node;
     list->length++;
     if(list->length==1) {

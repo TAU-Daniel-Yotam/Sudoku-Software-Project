@@ -1,11 +1,5 @@
-//
-// Created by Yotam Manne on 23/07/2018.
-//
 
 #include "Game.h"
-
-
-
 
 int mark_errors(Game* game, int arg){
     if(arg!=0 && arg!=1){
@@ -79,12 +73,14 @@ int checkRowColumn(Game* game, int x, int y, int value) {
 
 int edit(char * filePath){
     FILE * file;
-    fopen_s(&file,filePath,"r");
+    fopen(filePath,"r");
     if(file==NULL){
         abort();
     }
-/*    Game * game=readFromFile(file);*/
-   // game->markError=1;
+    Game * game=readFromFile(file);
+    if(game->mode=2){
+        game->markError=1;
+    }
     fclose(file);
 }
 
@@ -92,7 +88,6 @@ int edit(char * filePath){
 int undo(Game * game) {
     int i;
     int *move;
-
     if (!game->list->length || game->list->pointer == NULL) {
         /*no moves to undo error*/
         return 0;
@@ -136,30 +131,37 @@ int undo(Game * game) {
     }
 
     int save(Game *game, char *path) {
-        FILE *file;
-        fopen_s(&file, path, "w");
+        FILE *file=fopen(path,"w");
         if (file == NULL) {
-            ",,";
+            printf("error");
+            return 0;
         }
-        if (game->mode == 1 && !checkError(game)) {
-            printf("Error: board contains erroneous values\n");
+        if (game->mode == 2 && !checkError(game)) {
+            printf("error");
+            return 0;
         }
-        if (game->mode == 1 && !validate(game))
-            printf("Error: board validation failed\n");
-
-
+        if (game->mode == 1 && !validate(game)) {
+            printf("error");
+            return 0;
+        }
+        writeToFile(game,file);
+        printf("Saved to:x\n");
         fclose(file);
+        return 1;
     }
     int validate(Game *game) {
     }
 
     int checkError(Game *game) {
+
+    int i,j;
         Cell *cell;
         int sizeBoard = 0;
-        for (cell = game->board[0];
-             sizeBoard < game->columns * game->rows * game->columns * game->rows; sizeBoard++, cell++) {
-            if (!cell->isValid) {
-                return 0;
+        for (i=0;i<game->columns*game->rows;i++){
+            for(j=0;j<game->rows*game->columns;j++){
+                if(game->board[i][j].isValid){
+                    return 0;
+                }
             }
         }
         return 1;
@@ -204,7 +206,7 @@ int undo(Game * game) {
         index = game->board;
         for (i = 0; i < game->rows * game->columns; i++) {
             for (j = 0; j < game->rows * game->columns; j++) {
-                fprintf(file, "%d", index[i][j]);
+                fprintf(file, "%d", index[i][j].value);
                 if (index[i][j].isFixed == 1)
                     fprintf(file, ".");
                 if (j == (game->rows * game->columns - 1))

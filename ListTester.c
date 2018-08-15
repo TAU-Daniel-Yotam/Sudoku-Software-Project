@@ -40,23 +40,21 @@ int ** data1(){
     return list;
 }
 int un(List * list){
-    int i;
-    int* board;
-    Game * game=calloc(1,sizeof(game));
-    game->list=list;
-    printf("hi");
-    board=calloc(2,sizeof(int));
-    printf("hi");
- /*   for (i=0;i<20;i++){
-        board[i]=calloc(20,sizeof(Cell));
-    }
-    game->board=board;
-    printf("hi");
-    undo(game);
-    printf("hi");
-    list->pointer->data[0][3]=0;*/
+    int j,i;
+    FILE * file=fopen("C:\\Users\\danielpeer\\Pictures\\w","r");
+   Game * game=readFromFile(file);
+   printf("%d",game->columns);
+   for(j=0;j<4;j++){
+       for(i=0;i<4;i++){
+           printf("%d",game->board[i][j].value);
+       }
+   }
 
-    undo(game);
-    printf("%d",game->board[0][1].value);
-}
+
+
+
+    }
+
+
+
 
