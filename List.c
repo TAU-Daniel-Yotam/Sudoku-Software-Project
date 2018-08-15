@@ -9,14 +9,15 @@ List * createlist(){
     return list;
 }
 
-Node  * createNode(int ** data){
+Node  * createNode(int ** data,int size){
     Node * node=calloc(1, sizeof(Node));
+   node->size=size;
     node->data=data;
     node->previous=NULL;
     node->next=NULL;
     return node;
 }
-int insertAtHead(List * list,int ** data){
+/*int insertAtHead(List * list,int * data){
     Node * node =createNode(data);
     node->next=list->head;
     if(node->next!=NULL)
@@ -29,8 +30,8 @@ int insertAtHead(List * list,int ** data){
     list->pointer=list->head;
     return 1;
 
-}
-int deleteAtPosition(List *list,int pos){
+}*/
+/*int deleteAtPosition(List *list,int pos){
     Node * node=list->head;
     for(int j=0;j<pos;j++){
         node=node->next;
@@ -50,21 +51,18 @@ int deleteAtPosition(List *list,int pos){
     }
     list->length--;
     return 1;
-}
-int deleteAfterSet(List *list,Node * node){
-    Node * temp=node->next;
-    if(node->next!=NULL){
-        node->next=node->next->next;
-        if(node->next!=NULL)
-            node->next->previous=node;
-    }
-    free(temp);
-    list->length--;
-}
+}*/
 
-int delete2(List *list,Node * node){
+
+int deleteTail(List *list,Node * node){
     while(node->next!=NULL){
-        deleteAfterSet(list,node);
+        Node * temp=node->next;
+        node->next=node->next->next;
+        if(node->next!=NULL){
+            node->next->previous=node;
+        }
+        free(temp);
+        list->length--;
     }
 }
 
@@ -75,7 +73,7 @@ int printList(List * list){
     }
     return 1;
 }
-int printData(int ** data){
+int printData(int * data){
     int *g=data;
     for(int r=0;r<4;r++,g++){
         printf("%d",*g);
@@ -83,8 +81,8 @@ int printData(int ** data){
 return 1;
 }
 
-int movePointer(List * list,int isNext) {
-    if (isNext)
+int movePointer(List * list,int isRight) {
+    if (isRight)
         list->pointer = list->pointer->next;
 
     else
@@ -92,14 +90,14 @@ int movePointer(List * list,int isNext) {
     return 1;
 }
 
-int addLast(List * list,int ** data){
+int addLast(List * list,int * data){
     if(list->pointer!=list->tail){
-        delete2(list,list->pointer);
+        deleteTail(list,list->pointer);
     }
     Node *  node=createNode(data);
     list->pointer->next=node;
     list->tail=node;
-    list->tail=node;
+    list->pointer=node;
     list->length++;
     return 1;
 }
