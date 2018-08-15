@@ -7,8 +7,8 @@
 void testParser(){
 
     Game g;
-    g.column=3;
-    g.row=3;
+    g.columns=3;
+    g.rows=3;
     g.mode=0;
     g.markError=0;
     g.board=NULL;

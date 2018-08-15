@@ -206,14 +206,15 @@ int validateArgs(Command* c){
 }
 
 void initCommand(Command* c,int*a){
+    int i;
     c->strArg=NULL;
     if(c->intArgs!=NULL){
-        for(int i=0;i<3;i++)
+        for(i=0;i<3;i++)
             c->intArgs[i]=-1;
     }
     else{
         c->intArgs=a;
-        for(int i=0;i<3;i++)
+        for(i=0;i<3;i++)
             c->intArgs[i]=-1;
     }
     c->type=-1;

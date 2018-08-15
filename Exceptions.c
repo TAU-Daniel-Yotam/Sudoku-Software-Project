@@ -4,7 +4,7 @@
 
 #include "Exceptions.h"
 enum Exception{
-    NO_ERROR;
+    NO_ERROR,
     MEMORY_ALLOC_ERROR,
     INVALID_COMMAND_ERROR,
     CELL_FIXED_ERROR,

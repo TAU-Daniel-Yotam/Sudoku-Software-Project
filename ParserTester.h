@@ -3,10 +3,11 @@
 //
 
 #ifndef SUDOKU_SOFTWARE_PROJECT_PARSERTESTER_H
-#define SUDOKU_SOFTWARE_PROJECT_PARSERTESTER_H
-
 #include "Parser.h"
 #include "mainAux.h"
+
+#define SUDOKU_SOFTWARE_PROJECT_PARSERTESTER_H
+
 
 void testParser();
 
