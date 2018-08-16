@@ -31,7 +31,7 @@ void printError(Game*game,Exception e){
             printf("Error: board contains erroneous values\n");
             break;
         case BOARD_NOT_EMPTY_ERROR:
-            printf("Error: board is not empty \n");
+            printf("Error: board is not empty\n");
             break;
         case GENERATOR_FAILED_ERROR:
             printf("Error: puzzle generator failed\n");

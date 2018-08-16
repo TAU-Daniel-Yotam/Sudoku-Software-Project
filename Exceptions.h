@@ -28,4 +28,6 @@ typedef enum Exception{
     ILP_ERROR
 }Exception;
 
+void printError(Game*game,Exception e);
+
 #endif //SUDOKU_SOFTWARE_PROJECT_EXCEPTIONS_H

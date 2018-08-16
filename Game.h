@@ -2,6 +2,8 @@
 #include "list.h"
 #include "stdio.h"
 #include <stdlib.h>
+#include "Exceptions.h"
+#include "MainAux.h"
 
 #ifndef SUDOKU_SOFTWARE_PROJECT_GAME_H
 #include "IO.h"

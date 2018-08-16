@@ -3,21 +3,21 @@
 
 int mark_errors(Game* game, int arg){
     if(arg!=0 && arg!=1){
-        //error - arg must be 0 or 1
+        printError(game,BINARY_RANGE_ERROR);
         return 0;
     }
     game->markError=arg;
     return 1;
 }
 
-int* set(Game* game,int x,int y,int value){
-    int* listData=calloc(4, sizeof(int));
+int** set(Game* game,int x,int y,int value){
+    int* listData=calloc(4, sizeof(int)); /* 0:x,1:y,2:from,3:to */
     if(!checkRange(game,x) || !checkRange(game,y) || !checkRange(game,value)){
-        //error - not in range
+        printError(game,VALUE_RANGE_ERROR);
         return NULL;
     }
     if(game->mode==1 && game->board[x][y].isFixed){
-        //error - cell is fixed
+        printError(game,CELL_FIXED_ERROR);
         return NULL;
     }
     listData[0]=x,listData[1]=y,listData[2]=game->board[x][y].value,listData[3]=value;
@@ -27,7 +27,7 @@ int* set(Game* game,int x,int y,int value){
     if(checkValid(game,x,y,value)) game->board[x][y].isValid=1;
     else game->board[x][y].isValid=0;
 
-    return listData;
+    return &listData;
 }
 
 int hint(Game* game, int x, int y){
@@ -75,7 +75,7 @@ int edit(char * filePath){
     FILE * file;
     fopen(filePath,"r");
     if(file==NULL){
-        printError();
+        printError(NULL,EDIT_IO_ERROR);
     }
     Game * game=readFromFile(file);
     if(game->mode=2){
@@ -86,15 +86,17 @@ int edit(char * filePath){
 
 /*change and then move list pointer */
 int undo(Game * game) {
+
+    /* need to complete: print board after changing the values and before printing the cells that changed */
     int i;
     int *move;
     if (!game->list->length || game->list->pointer == NULL) {
-        /*no moves to undo error*/
+        printError(game,UNDO_ERROR);
         return 0;
     }
     for (i = 0; i < game->list->pointer->size; i++) {
         move = game->list->pointer->data[i];
-      game->board[move[0]][move[1]].value = move[2];
+        game->board[move[0]][move[1]].value = move[2];
         printf("Undo %d,%d: from ",move[0], move[1]);
         if (move[3])
             printf("%d to ", move[3]);
@@ -111,12 +113,14 @@ int undo(Game * game) {
 
 /*move list pointer and then change*/
     int redo(Game *game) {
-        char from;
+
+    /* need to complete: print board after changing the values and before printing the cells that changed */
+    char from;
         char to;
         int i;
         int *move;
         if (!game->list->length || game->list->pointer->next == NULL) {
-            /*no moves to undo error*/
+            printError(game,REDO_ERROR);
             return 0;
         }
         game->list->pointer = game->list->pointer->next;
@@ -125,6 +129,7 @@ int undo(Game * game) {
             from = (move[2] == 0 ? '_' : move[2] + '0');
             to = (move[3] == 0 ? '_' : move[3] + '0');
             game->board[move[0]][move[1]].value = move[3];
+            if(i==0) printBoard(game);
             printf("Redo %d,%d: from %c to %c\n", move[0], move[1], to, from);
         }
         return 1;
@@ -152,11 +157,10 @@ int undo(Game * game) {
     int validate(Game *game) {
     }
 
+    /* 0 if board is erroneous, 1 else*/
     int checkError(Game *game) {
 
     int i,j;
-        Cell *cell;
-        int sizeBoard = 0;
         for (i=0;i<game->columns*game->rows;i++){
             for(j=0;j<game->rows*game->columns;j++){
                 if(game->board[i][j].isValid){
@@ -174,6 +178,7 @@ int undo(Game * game) {
         }
         printf("Board reset\n");
     }
+
     Game *readFromFile(FILE *file) {
         int a, b, num, i, j;
         Cell **index;
@@ -214,6 +219,91 @@ int undo(Game * game) {
                 else
                     fprintf(file, "\t");
 
+            }
+        }
+    }
+
+    int** autofill(Game*game){
+        int num_val[2]={0};
+        int**cellsToFill=NULL;
+        int i,j,first=1,count=0;
+        if(!checkError(game)){
+            printError(game,ERRONEOUS_BOARD_ERROR);
+            return 0;
+        }
+        for(i=0;i<game->rows;i++){
+            for(j=0;j<game->columns;j++){
+                if(game->board[i][j].value){/* if cell is not empty */
+                    countPossibleValues(game,num_val,i,j);
+                    if(num_val[0]==1) {
+                        if(first){
+                            cellsToFill=(int**)calloc(++count, sizeof(int*));
+                            if(cellsToFill==NULL) printError(game,MEMORY_ALLOC_ERROR);
+                            cellsToFill[count-1]=(int*)calloc(4, sizeof(int)); /* 0:x,1:y,2:from,3:to */
+                            if(cellsToFill[count-1]==NULL) printError(game,MEMORY_ALLOC_ERROR);
+                            cellsToFill[count-1][0]=i;
+                            cellsToFill[count-1][1]=j;
+                            cellsToFill[count-1][2]=0;
+                            cellsToFill[count-1][3]=num_val[1];
+                            first=0;
+                        }
+                        else{
+                            cellsToFill=(int**)realloc(cellsToFill,++count);
+                            if(cellsToFill==NULL) printError(game,MEMORY_ALLOC_ERROR);
+                            cellsToFill[count-1]=(int*)calloc(4, sizeof(int)); /* 0:x,1:y,2:from,3:to */
+                            if(cellsToFill[count-1]==NULL) printError(game,MEMORY_ALLOC_ERROR);
+                            cellsToFill[count-1][0]=i;
+                            cellsToFill[count-1][1]=j;
+                            cellsToFill[count-1][2]=0;
+                            cellsToFill[count-1][3]=num_val[1];
+                        }
+                    }
+                }
+            }
+        }
+        /* complete:
+         * add list node
+         * if count == 0 don't add list node
+         * delete list nodes after this command*/
+        fillValues(game,cellsToFill,count);
+        updateCellValidity(game);
+        printBoard(game);
+        return cellsToFill;
+    }
+
+    void countPossibleValues(Game*game,int*num_val,int x, int y){
+        int i,first=1;
+        num_val[0]=0;
+        num_val[1]=0;
+        for(i=1;i<=game->rows*game->columns;i++){
+            if(checkValid(game,x,y,i)){
+                if(first){
+                    num_val[1]=i;
+                    first=0;
+                }
+                num_val[0]++;
+            }
+        }
+    }
+
+    void fillValues(Game*game,int**values,int size){
+        int i;
+        for(i=0;i<size;i++){
+            game->board[values[i][0]][values[i][1]].value=values[i][3];
+            game->board[values[i][0]][values[i][1]].isPlayerMove=1;
+            printf("Cell <%d,%d> set to %d\n",values[i][0],values[i][1],values[i][3]);
+        }
+    }
+
+    void updateCellValidity(Game*game){
+        int i,j;
+        for(i=0;i<game->rows;i++){
+            for(j=0;j<game->columns;j++){
+                if(!checkValid(game,i,j,game->board[i][j].value)){
+                    game->board[i][j].isValid=0;
+                } else{
+                    game->board[i][j].isValid=1;
+                }
             }
         }
     }

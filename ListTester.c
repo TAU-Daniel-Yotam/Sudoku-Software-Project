@@ -30,7 +30,7 @@ int ** data1(){
 }
 
         List* lista(int ** data,int **  data1){
-    List * list=createlist();
+    List * list=createList();
     addLast(list,data,4);
     addLast(list,data1,4);
     addLast(list,data1,4);

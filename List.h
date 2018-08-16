@@ -16,7 +16,7 @@ typedef struct List{
 
 #define SUDOKU_SOFTWARE_PROJECT_LIST_H
 Node * createNode(int ** data,int size);
-List * createlist();
+List * createList();
 int printData(int ** data,int size);
 int deleteAtPosition(List *list,int pos);
 int insertAtHead(List * list,int ** data);

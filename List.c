@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-List * createlist(){
+List * createList(){
     List * list=calloc(1, sizeof(List));
     list->head=NULL;
     list->tail=NULL;
@@ -12,7 +12,7 @@ List * createlist(){
 
 Node  * createNode(int ** data,int size){
     Node * node=calloc(1, sizeof(Node));
-   node->size=size;
+    node->size=size;
     node->data=data;
     node->previous=NULL;
     node->next=NULL;
@@ -47,9 +47,10 @@ int deleteAtPosition(List *list,int pos) {
         if (list->length == 1) {
             list->tail = node->next;
         }
-    } else if (pos = list->length - 1) {
+    } else if (pos == list->length - 1) {
         list->tail = node->previous;
     }
+    freeNode(node);
     list->length--;
     return 1;
 }
@@ -62,7 +63,7 @@ int deleteTail(List *list,Node * node){
         if(node->next!=NULL){
             node->next->previous=node;
         }
-        free(temp);
+        freeNode(temp);
         list->length--;
     }
 }
@@ -106,7 +107,15 @@ int addLast(List * list,int ** data,int size){
         list->pointer->next = node;}
         list->tail = node;
         list->pointer = node;
-    list->length++;;
+        list->length++;;
         return 1;
 
+}
+
+void freeNode(Node*n){
+    int i;
+    for(i=0;i<n->size;i++){
+        free(n->data[i]);
+    }
+    free(n);
 }
