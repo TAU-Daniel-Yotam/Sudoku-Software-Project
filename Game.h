@@ -6,6 +6,7 @@
 #include "MainAux.h"
 
 #ifndef SUDOKU_SOFTWARE_PROJECT_GAME_H
+#define SUDOKU_SOFTWARE_PROJECT_GAME_H
 #include "IO.h"
 typedef struct Cell{
     int value;
@@ -27,7 +28,6 @@ typedef struct Game{
 
 
 int reset(Game * game);
-#define SUDOKU_SOFTWARE_PROJECT_GAME_H
 Game * readFromFile(FILE * file);
 int undo(Game * game);
 int  writeToFile(Game * game,FILE * file);

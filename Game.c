@@ -78,7 +78,7 @@ int edit(char * filePath){
         printError(NULL,EDIT_IO_ERROR);
     }
     Game * game=readFromFile(file);
-    if(game->mode=2){
+    if(game->mode==2){
         game->markError=1;
     }
     fclose(file);
@@ -304,6 +304,22 @@ int undo(Game * game) {
                 } else{
                     game->board[i][j].isValid=1;
                 }
+            }
+        }
+    }
+
+    int**generate(Game*game,int x,int y){
+        if(!checkRange(game,x) || !checkRange(game,y)){
+            printError(game,VALUE_RANGE_ERROR);
+            return 0;
+        }
+    }
+
+    void clearBoard(Game*game){
+        int i,j;
+        for(i=0;i<game->rows;i++){
+            for(j=0;j<game->columns;j++){
+                game->board[i][j].value=0;
             }
         }
     }
