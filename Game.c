@@ -75,7 +75,7 @@ int edit(char * filePath){
     FILE * file;
     fopen(filePath,"r");
     if(file==NULL){
-        abort();
+        printError();
     }
     Game * game=readFromFile(file);
     if(game->mode=2){
