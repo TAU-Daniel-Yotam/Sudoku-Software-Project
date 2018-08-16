@@ -29,4 +29,6 @@ int reset(Game * game);
 Game * readFromFile(FILE * file);
 int undo(Game * game);
 int  writeToFile(Game * game,FILE * file);
+int checkError(Game *game);
+int save(Game *game, char *path);
 #endif //SUDOKU_SOFTWARE_PROJECT_GAME_H
