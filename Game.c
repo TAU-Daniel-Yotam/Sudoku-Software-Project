@@ -74,12 +74,13 @@ int checkRowColumn(Game* game, int x, int y, int value) {
 
 int edit(char * filePath){
     FILE * file;
+    Game * game;
     file=fopen(filePath,"r");
     if(file==NULL){
         printError(NULL,EDIT_IO_ERROR);
         return 0;
     }
-    Game * game=readFromFile(file);
+    game=readFromFile(file);
     if(game->mode==2){
         game->markError=1;
     }
@@ -188,13 +189,14 @@ int undo(Game * game) {
     Game *readFromFile(FILE *file) {
         int a, b, num, i, j;
         Cell **index;
+        Game *game;
         fscanf(file, "%d", &a);
         fscanf(file, "%d", &b);
         index = calloc((unsigned int)(a * b), sizeof(Cell *));
         for (i = 0; i < a * b; i++) {
             index[i] = calloc((unsigned int)(a * b), sizeof(Cell));
         }
-        Game *game = calloc(1, sizeof(Game));
+        game = calloc(1, sizeof(Game));
         game->columns = b;
         game->rows = a;
         game->board = index;
@@ -328,7 +330,7 @@ int undo(Game * game) {
         removed=0;
         if(!checkRange(game,x) || !checkRange(game,y)){
             printError(game,VALUE_RANGE_ERROR);
-            return NULL;
+            return 0;
         }
         if(!checkEmpty(game)){
             printError(game,BOARD_NOT_EMPTY_ERROR);
