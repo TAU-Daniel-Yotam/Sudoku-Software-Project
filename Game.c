@@ -10,7 +10,7 @@ int mark_errors(Game* game, int arg){
     return 1;
 }
 
-int** set(Game* game,int x,int y,int value){
+int set(Game* game,int x,int y,int value){
     int* listData=calloc(4, sizeof(int)); /* 0:x,1:y,2:from,3:to */
     if(!checkRange(game,x) || !checkRange(game,y) || !checkRange(game,value)){
         printError(game,VALUE_RANGE_ERROR);
@@ -62,10 +62,10 @@ int checkBlock(Game* game, int x, int y, int value) {
 
 int checkRowColumn(Game* game, int x, int y, int value) {
     int i;
-    for(i=0;i<game->rows;i++){
+    for(i=0;i<game->rows*game->columns;i++){
         if(i!=y && game->board[x][i].value==value) return 0;
     }
-    for(i=0;i<game->columns;i++){
+    for(i=0;i<game->rows*game->columns;i++){
         if(i!=x && game->board[i][y].value==value) return 0;
     }
     return 1;
@@ -223,7 +223,7 @@ int undo(Game * game) {
         }
     }
 
-    int** autofill(Game*game){
+    int autofill(Game*game){ /* merge if-else to aux func */
         int num_val[2]={0};
         int**cellsToFill=NULL;
         int i,j,first=1,count=0;
@@ -231,9 +231,9 @@ int undo(Game * game) {
             printError(game,ERRONEOUS_BOARD_ERROR);
             return 0;
         }
-        for(i=0;i<game->rows;i++){
-            for(j=0;j<game->columns;j++){
-                if(game->board[i][j].value){/* if cell is not empty */
+        for(i=0;i<game->rows*game->columns;i++){
+            for(j=0;j<game->rows*game->columns;j++){
+                if(!game->board[i][j].value){/* if cell is empty */
                     countPossibleValues(game,num_val,i,j);
                     if(num_val[0]==1) {
                         if(first){
@@ -271,7 +271,7 @@ int undo(Game * game) {
         return cellsToFill;
     }
 
-    void countPossibleValues(Game*game,int*num_val,int x, int y){
+    int countPossibleValues(Game*game,int*num_val,int x, int y){
         int i,first=1;
         num_val[0]=0;
         num_val[1]=0;
@@ -284,6 +284,7 @@ int undo(Game * game) {
                 num_val[0]++;
             }
         }
+        return num_val[0];
     }
 
     void fillValues(Game*game,int**values,int size){
@@ -297,8 +298,8 @@ int undo(Game * game) {
 
     void updateCellValidity(Game*game){
         int i,j;
-        for(i=0;i<game->rows;i++){
-            for(j=0;j<game->columns;j++){
+        for(i=0;i<game->rows*game->columns;i++){
+            for(j=0;j<game->rows*game->columns;j++){
                 if(!checkValid(game,i,j,game->board[i][j].value)){
                     game->board[i][j].isValid=0;
                 } else{
@@ -308,25 +309,111 @@ int undo(Game * game) {
         }
     }
 
-    int**generate(Game*game,int x,int y){
+    int generate(Game*game,int x,int y){
+        int i,j,tries,size,count,removed;
+        int*values;
+        int**listData;
+        int a[2]={0};
+        count=0;
+        removed=0;
         if(!checkRange(game,x) || !checkRange(game,y)){
             printError(game,VALUE_RANGE_ERROR);
+            return NULL;
+        }
+        if(!checkEmpty(game)){
+            printError(game,BOARD_NOT_EMPTY_ERROR);
             return 0;
         }
+        tries=fillXvalues(game,x);
+
+        if(tries==1001){
+            printError(game,GENERATOR_FAILED_ERROR);
+            return 0;
+        }
+        solve(game); /* need to implement */
+
+        while(removed < game->rows*game->columns*game->rows*game->columns-y){
+            do {
+                i = rand() % game->rows*game->columns;
+                j = rand() % game->rows*game->columns;
+            } while (!game->board[i][j].value);
+            game->board[i][j].value=0;
+        }
+        createListDataGenerate(game,listData);
+        addLast(game->list,listData,y);
+        return 1;
     }
 
     void clearBoard(Game*game){
         int i,j;
-        for(i=0;i<game->rows;i++){
-            for(j=0;j<game->columns;j++){
+        for(i=0;i<game->rows*game->columns;i++){
+            for(j=0;j<game->rows*game->columns;j++){
                 game->board[i][j].value=0;
+            }
+        }
+
+    }
+
+    int fillXvalues(Game*game,int x){
+        int tries,count,i,j,size;
+        int*values;
+        int a[2]={0};
+        while (tries<1000 && count<x) {
+            do {
+                i = rand() % game->rows*game->columns;
+                j = rand() % game->rows*game->columns;
+            } while (game->board[i][j].value);
+            size = countPossibleValues(game,a,i,j);
+            if(size>0) {
+                values = (int *) calloc(size, sizeof(int));
+                if (values == NULL) printError(game, MEMORY_ALLOC_ERROR);
+                createValuesArray(game,i,j,values);
+                game->board[i][j].value = values[rand() % size];
+                count++;
+                free(values);
+                continue;
+            }
+            tries++;
+        }
+        if(count<x) tries++;
+        return tries;
+    }
+
+    int checkEmpty(Game*game){
+        int i,j;
+        for(i=0;i<game->rows*game->columns;i++){
+            for(j=0;j<game->rows*game->columns;j++){
+                if(game->board[i][j].value) return 0;
+            }
+        }
+        return 1;
+    }
+
+    void createValuesArray(Game*game,int x,int y,int* values){
+        int i=1,j=0;
+        for(;i<game->columns*game->rows;i++){
+            if(checkValid(game,x,y,i)){
+                values[j]=i;
+                j++;
             }
         }
     }
 
-
-
-
+    void createListDataGenerate(Game*game,int**listData){
+        int i,j,count;
+        count=0;
+        for(i=0;i<game->rows*game->columns;i++){
+            for(j=0;j<game->rows*game->columns;j++){
+                if(game->board[i][j].value){
+                    listData[count]=(int*)calloc(4, sizeof(int));
+                    listData[count][0]=i;
+                    listData[count][1]=j;
+                    listData[count][2]=0;
+                    listData[count][3]=game->board[i][j].value;
+                }
+            }
+        }
+    }
 
 
 

@@ -1,4 +1,5 @@
 #ifndef SUDOKU_SOFTWARE_PROJECT_LIST_H
+#define SUDOKU_SOFTWARE_PROJECT_LIST_H
 typedef struct  Node {
     int ** data;
     int size;
@@ -14,7 +15,6 @@ typedef struct List{
     int length;
 } List;
 
-#define SUDOKU_SOFTWARE_PROJECT_LIST_H
 Node * createNode(int ** data,int size);
 List * createList();
 int printData(int ** data,int size);
@@ -26,5 +26,5 @@ int printList(List * list);
 int movePointer(List * list,int move);
 int deleteTail(List *list,Node * node);
 int addLast(List * list,int ** data,int size);
-#endif //SUDOKU_SOFTWARE_PROJECT_LIST_H
+#endif
 

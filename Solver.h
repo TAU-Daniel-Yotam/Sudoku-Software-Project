@@ -1,8 +1,14 @@
-//
-// Created by Yotam Manne on 23/07/2018.
-//
+
 
 #ifndef SUDOKU_SOFTWARE_PROJECT_SOLVER_H
 #define SUDOKU_SOFTWARE_PROJECT_SOLVER_H
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "gurobi_c.h"
+#include "Game.h"
 
-#endif //SUDOKU_SOFTWARE_PROJECT_SOLVER_H
+#define SUBDIM  3
+#define DIM    (SUBDIM*SUBDIM)
+
+#endif

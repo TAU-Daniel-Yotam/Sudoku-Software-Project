@@ -10,4 +10,4 @@ void printBoard(Game* game);
 void printArray(void*a, int size);
 int arrComp(int*a1, int size1, int*a2, int size2);
 
-#endif //SUDOKU_SOFTWARE_PROJECT_MAINAUX_H
+#endif 

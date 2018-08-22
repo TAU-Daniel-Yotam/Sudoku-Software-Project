@@ -1,6 +1,4 @@
-//
-// Created by Yotam Manne on 23/07/2018.
-//
+
 
 #ifndef SUDOKU_SOFTWARE_PROJECT_EXCEPTIONS_H
 #define SUDOKU_SOFTWARE_PROJECT_EXCEPTIONS_H
@@ -30,4 +28,4 @@ typedef enum Exception{
 
 void printError(Game*game,Exception e);
 
-#endif //SUDOKU_SOFTWARE_PROJECT_EXCEPTIONS_H
+#endif
