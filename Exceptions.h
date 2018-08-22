@@ -1,9 +1,9 @@
-
+#include "Game.h"
 
 #ifndef SUDOKU_SOFTWARE_PROJECT_EXCEPTIONS_H
 #define SUDOKU_SOFTWARE_PROJECT_EXCEPTIONS_H
 
-#include "Game.h"
+
 
 typedef enum Exception{
     NO_ERROR,
