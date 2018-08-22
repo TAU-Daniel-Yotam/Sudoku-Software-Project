@@ -1,8 +1,6 @@
-//
-// Created by Yotam Manne on 23/07/2018.
-//
 
 #include "Solver.h"
+#include "main.c"
 
 int solve(Game*game){
     FILE     *fp    = NULL;
