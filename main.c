@@ -1,7 +1,6 @@
 
 
 #include "Game.h"
-#include "Solver.h"
 #include "Parser.h"
 #include "MainAux.h"
 
