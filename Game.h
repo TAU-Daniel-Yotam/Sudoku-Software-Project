@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "Exceptions.h"
 #include "MainAux.h"
+#include "Solver.h"
 
 #ifndef SUDOKU_SOFTWARE_PROJECT_GAME_H
 #define SUDOKU_SOFTWARE_PROJECT_GAME_H

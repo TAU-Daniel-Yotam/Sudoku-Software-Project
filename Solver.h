@@ -11,4 +11,6 @@
 #define SUBDIM  3
 #define DIM    (SUBDIM*SUBDIM)
 
+int ILPSolve(Game* game);
+
 #endif

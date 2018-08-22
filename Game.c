@@ -21,7 +21,8 @@ int set(Game* game,int x,int y,int value){
         return 0;
     }
     listData[0]=x,listData[1]=y,listData[2]=game->board[x][y].value,listData[3]=value;
-   // addLast(game->list,listData);
+    if(!listData[2]==listData[3])
+        addLast(game->list,listData,1);
 
     game->board[x][y].value=value;
     if(checkValid(game,x,y,value)) game->board[x][y].isValid=1;
@@ -322,11 +323,8 @@ int undo(Game * game) {
     }
 
     int generate(Game*game,int x,int y){
-        int i,j,tries,size,count,removed;
-        int*values;
+        int i,j,tries,removed;
         int**listData;
-        int a[2]={0};
-        count=0;
         removed=0;
         if(!checkRange(game,x) || !checkRange(game,y)){
             printError(game,VALUE_RANGE_ERROR);
@@ -342,7 +340,7 @@ int undo(Game * game) {
             printError(game,GENERATOR_FAILED_ERROR);
             return 0;
         }
-        solve(game); /* need to implement */
+        ILPSolve(game); /* need to implement */
 
         while(removed < game->rows*game->columns*game->rows*game->columns-y){
             do {
