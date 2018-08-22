@@ -2,10 +2,9 @@
 
 #include "Game.h"
 #include "Solver.h"
-#include "parser.h"
+#include "Parser.h"
 #include "MainAux.h"
-#include "ParserTester.h"
-#include "ListTester.h"
+
 int main(){
     /*
     int ** r=data();
@@ -13,8 +12,6 @@ int main(){
     List * list=lista(r,t);
     un(list);*/
 
-    char command[1024];
-
-
+    return 0;
 
 }
