@@ -35,4 +35,17 @@ int undo(Game * game);
 int  writeToFile(Game * game,FILE * file);
 int checkError(Game *game);
 int save(Game *game, char *path);
+int checkValid(Game* game, int x, int y, int value);
+int checkRange(Game*game,int x);
+int checkBlock(Game* game, int x, int y, int value);
+int checkRowColumn(Game* game, int x, int y, int value);
+int validate(Game *game);
+int countPossibleValues(Game*game,int*num_val,int x, int y);
+void fillValues(Game*game,int**values,int size);
+int checkEmpty(Game*game);
+void createValuesArray(Game*game,int x,int y,int* values);
+void createListDataGenerate(Game*game,int**listData);
+int fillXvalues(Game*game,int x);
+void updateCellValidity(Game*game);
+
 #endif

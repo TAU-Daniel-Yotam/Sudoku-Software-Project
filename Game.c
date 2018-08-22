@@ -14,11 +14,11 @@ int set(Game* game,int x,int y,int value){
     int* listData=calloc(4, sizeof(int)); /* 0:x,1:y,2:from,3:to */
     if(!checkRange(game,x) || !checkRange(game,y) || !checkRange(game,value)){
         printError(game,VALUE_RANGE_ERROR);
-        return NULL;
+        return 0;
     }
     if(game->mode==1 && game->board[x][y].isFixed){
         printError(game,CELL_FIXED_ERROR);
-        return NULL;
+        return 0;
     }
     listData[0]=x,listData[1]=y,listData[2]=game->board[x][y].value,listData[3]=value;
    // addLast(game->list,listData);
@@ -27,11 +27,11 @@ int set(Game* game,int x,int y,int value){
     if(checkValid(game,x,y,value)) game->board[x][y].isValid=1;
     else game->board[x][y].isValid=0;
 
-    return &listData;
+    return 1;
 }
 
 int hint(Game* game, int x, int y){
-    
+    return 0;
 }
 
 
@@ -73,15 +73,17 @@ int checkRowColumn(Game* game, int x, int y, int value) {
 
 int edit(char * filePath){
     FILE * file;
-    fopen(filePath,"r");
+    file=fopen(filePath,"r");
     if(file==NULL){
         printError(NULL,EDIT_IO_ERROR);
+        return 0;
     }
     Game * game=readFromFile(file);
     if(game->mode==2){
         game->markError=1;
     }
     fclose(file);
+    return 1;
 }
 
 /*change and then move list pointer */
@@ -114,8 +116,8 @@ int undo(Game * game) {
 /*move list pointer and then change*/
     int redo(Game *game) {
 
-    /* need to complete: print board after changing the values and before printing the cells that changed */
-    char from;
+        /* need to complete: print board after changing the values and before printing the cells that changed */
+        char from;
         char to;
         int i;
         int *move;
@@ -126,8 +128,8 @@ int undo(Game * game) {
         game->list->pointer = game->list->pointer->next;
         for (i = 0; i < game->list->pointer->size; i++) {
             move = game->list->pointer->data[i];
-            from = (move[2] == 0 ? '_' : move[2] + '0');
-            to = (move[3] == 0 ? '_' : move[3] + '0');
+            from = (char)(move[2] == 0 ? '_' : move[2] + '0');
+            to = (char)(move[3] == 0 ? '_' : move[3] + '0');
             game->board[move[0]][move[1]].value = move[3];
             if(i==0) printBoard(game);
             printf("Redo %d,%d: from %c to %c\n", move[0], move[1], to, from);
@@ -154,7 +156,9 @@ int undo(Game * game) {
         fclose(file);
         return 1;
     }
+
     int validate(Game *game) {
+        return 0;
     }
 
     /* 0 if board is erroneous, 1 else*/
@@ -177,6 +181,7 @@ int undo(Game * game) {
             deleteAtPosition(game->list, game->list->length - 1);
         }
         printf("Board reset\n");
+        return 1;
     }
 
     Game *readFromFile(FILE *file) {
@@ -184,9 +189,9 @@ int undo(Game * game) {
         Cell **index;
         fscanf(file, "%d", &a);
         fscanf(file, "%d", &b);
-        index = calloc(a * b, sizeof(Cell *));
+        index = calloc((unsigned int)(a * b), sizeof(Cell *));
         for (i = 0; i < a * b; i++) {
-            index[i] = calloc(a * b, sizeof(Cell));
+            index[i] = calloc((unsigned int)(a * b), sizeof(Cell));
         }
         Game *game = calloc(1, sizeof(Game));
         game->columns = b;
@@ -221,6 +226,7 @@ int undo(Game * game) {
 
             }
         }
+        return 1;
     }
 
     int autofill(Game*game){ /* merge if-else to aux func */
@@ -237,8 +243,11 @@ int undo(Game * game) {
                     countPossibleValues(game,num_val,i,j);
                     if(num_val[0]==1) {
                         if(first){
-                            cellsToFill=(int**)calloc(++count, sizeof(int*));
-                            if(cellsToFill==NULL) printError(game,MEMORY_ALLOC_ERROR);
+                            cellsToFill=(int**)calloc((unsigned int)++count, sizeof(int*));
+                            if(cellsToFill==NULL) {
+                                printError(game,MEMORY_ALLOC_ERROR);
+                                return 0;
+                            }
                             cellsToFill[count-1]=(int*)calloc(4, sizeof(int)); /* 0:x,1:y,2:from,3:to */
                             if(cellsToFill[count-1]==NULL) printError(game,MEMORY_ALLOC_ERROR);
                             cellsToFill[count-1][0]=i;
@@ -248,8 +257,11 @@ int undo(Game * game) {
                             first=0;
                         }
                         else{
-                            cellsToFill=(int**)realloc(cellsToFill,++count);
-                            if(cellsToFill==NULL) printError(game,MEMORY_ALLOC_ERROR);
+                            cellsToFill=(int**)realloc(cellsToFill,(unsigned int)++count);
+                            if(cellsToFill==NULL) {
+                                printError(game,MEMORY_ALLOC_ERROR);
+                                return 0;
+                            }
                             cellsToFill[count-1]=(int*)calloc(4, sizeof(int)); /* 0:x,1:y,2:from,3:to */
                             if(cellsToFill[count-1]==NULL) printError(game,MEMORY_ALLOC_ERROR);
                             cellsToFill[count-1][0]=i;
@@ -268,7 +280,7 @@ int undo(Game * game) {
         fillValues(game,cellsToFill,count);
         updateCellValidity(game);
         printBoard(game);
-        return cellsToFill;
+        return 1;
     }
 
     int countPossibleValues(Game*game,int*num_val,int x, int y){
@@ -358,6 +370,8 @@ int undo(Game * game) {
         int tries,count,i,j,size;
         int*values;
         int a[2]={0};
+        tries=0;
+        count=0;
         while (tries<1000 && count<x) {
             do {
                 i = rand() % game->rows*game->columns;
@@ -365,8 +379,11 @@ int undo(Game * game) {
             } while (game->board[i][j].value);
             size = countPossibleValues(game,a,i,j);
             if(size>0) {
-                values = (int *) calloc(size, sizeof(int));
-                if (values == NULL) printError(game, MEMORY_ALLOC_ERROR);
+                values = (int *) calloc((unsigned int)size, sizeof(int));
+                if (values == NULL) {
+                    printError(game, MEMORY_ALLOC_ERROR);
+                    return 0;
+                }
                 createValuesArray(game,i,j,values);
                 game->board[i][j].value = values[rand() % size];
                 count++;
