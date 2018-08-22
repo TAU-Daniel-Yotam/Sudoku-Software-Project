@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Parser.h"
 #include "MainAux.h"
+#include "gurobi_c.h"
 
 int main(){
     /*
