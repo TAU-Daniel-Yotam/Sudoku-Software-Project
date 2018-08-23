@@ -71,3 +71,25 @@ int initArray(int*a, int size, int initValue){
     }
     return 0;
 }
+
+int**copyBoard(Game*game){
+    int size,i,j;
+    int**board;
+    size=game->columns*game->rows;
+    board=(int**)calloc((unsigned int)size,sizeof(int*));
+    if(board==NULL){
+        printError(game,MEMORY_ALLOC_ERROR);
+        return NULL;
+    }
+    for(i=0;i<size;i++){
+        board[i]=(int*)calloc((unsigned int)size, sizeof(int));
+        if(board[i]==NULL){
+            printError(game,MEMORY_ALLOC_ERROR);
+            return NULL;
+        }
+        for(j=0;j<size;j++){
+            board[i][j]=game->board[i][j].value;
+        }
+    }
+    return board;
+}

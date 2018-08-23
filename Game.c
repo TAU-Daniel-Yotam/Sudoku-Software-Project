@@ -32,7 +32,29 @@ int set(Game* game,int x,int y,int value){
 }
 
 int hint(Game* game, int x, int y){
-    return 0;
+    int**board;
+    if(!checkRange(game,x) || !checkRange(game,y)){
+        printError(game,VALUE_RANGE_ERROR);
+        return 0;
+    }
+    if(!checkError(game)){
+        printError(game,ERRONEOUS_BOARD_ERROR);
+        return 0;
+    }
+    if(game->board[x][y].isFixed){
+        printError(game,CELL_FIXED_ERROR);
+        return 0;
+    }
+    if(game->board[x][y].value){
+        printError(game,CELL_HAS_VALUE_ERROR);
+        return 0;
+    }
+    board=copyBoard(game);
+    if(!ILPSolve(game,board)){
+        printError(game,BOARD_UNSOLVEABLE_ERROR);
+        return 0;
+    }
+    return 1;
 }
 
 
