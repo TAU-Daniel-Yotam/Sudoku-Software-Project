@@ -2,11 +2,9 @@
 #include "Solver.h"
 #include "main.c"
 
-int solve(Game*game){
-    FILE     *fp    = NULL;
+int ILPSolve(Game*game,int**board){
     GRBenv   *env   = NULL;
     GRBmodel *model = NULL;
-    int       board[DIM][DIM];
     char      inputline[100];
     int       ind[DIM];
     double    val[DIM];
@@ -21,29 +19,6 @@ int solve(Game*game){
     int       i, j, v, ig, jg, count;
     int       error = 0;
 
-    if (argc < 2) {
-        fprintf(stderr, "Usage: sudoku_c datafile\n");
-        exit(1);
-    }
-
-    fp = fopen(argv[1], "r");
-    if (fp == NULL) {
-        fprintf(stderr, "Error: unable to open input file %s\n", argv[1]);
-        exit(1);
-    }
-
-    for (i = 0; i < DIM; i++) {
-        fgets(inputline, 100, fp);
-        if (strlen(inputline) < 9) {
-            fprintf(stderr, "Error: not enough board positions specified\n");
-            exit(1);
-        }
-        for (j = 0; j < DIM; j++) {
-            board[i][j] = (int) inputline[j] - (int) '1';
-            if (board[i][j] < 0 || board[i][j] >= DIM)
-                board[i][j] = -1;
-        }
-    }
 
     /* Create an empty model */
 
@@ -120,11 +95,11 @@ int solve(Game*game){
     /* Each value must appear once in each subgrid */
 
     for (v = 0; v < DIM; v++) {
-        for (ig = 0; ig < SUBDIM; ig++) {
-            for (jg = 0; jg < SUBDIM; jg++) {
+        for (ig = 0; ig < SUBDIM1; ig++) {
+            for (jg = 0; jg < SUBDIM2; jg++) {
                 count = 0;
-                for (i = ig*SUBDIM; i < (ig+1)*SUBDIM; i++) {
-                    for (j = jg*SUBDIM; j < (jg+1)*SUBDIM; j++) {
+                for (i = ig*SUBDIM1; i < (ig+1)*SUBDIM1; i++) {
+                    for (j = jg*SUBDIM2; j < (jg+1)*SUBDIM2; j++) {
                         ind[count] = i*DIM*DIM + j*DIM + v;
                         val[count] = 1.0;
                         count++;

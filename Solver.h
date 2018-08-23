@@ -7,9 +7,10 @@
 #include <string.h>
 #include "Game.h"
 
-#define SUBDIM  3
-#define DIM    (SUBDIM*SUBDIM)
+#define SUBDIM1  (game->rows)
+#define SUBDIM2  (game->columns)
+#define DIM    (SUBDIM1*SUBDIM2)
 
-int ILPSolve(Game* game);
+int ILPSolve(Game*game,int**board);
 
 #endif
