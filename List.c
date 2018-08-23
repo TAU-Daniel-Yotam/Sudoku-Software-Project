@@ -1,9 +1,11 @@
 #include "List.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 List * createList(){
     List * list=calloc(1, sizeof(List));
+    if(list==NULL){
+        printError(NULL,MEMORY_ALLOC_ERROR);
+        return NULL;
+    }
     list->head=NULL;
     list->tail=NULL;
     list->pointer=NULL;
@@ -12,6 +14,10 @@ List * createList(){
 
 Node  * createNode(int ** data,int size){
     Node * node=calloc(1, sizeof(Node));
+    if(node==NULL){
+        printError(NULL,MEMORY_ALLOC_ERROR);
+        return NULL;
+    }
     node->size=size;
     node->data=data;
     node->previous=NULL;
@@ -118,4 +124,12 @@ void freeNode(Node*n){
         free(n->data[i]);
     }
     free(n);
+}
+
+void freeList(List*list){
+    int i;
+    while(list->head!=NULL){
+        freeNode(list->head);
+    }
+    free(list);
 }

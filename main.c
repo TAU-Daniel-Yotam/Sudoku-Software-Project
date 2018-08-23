@@ -6,11 +6,14 @@
 #include "gurobi_c.h"
 
 int main(){
+    Game game;
+    Command parsedCommand;
+    char* command;
+    printf("Sudoku\n------\n");
+
     /*
-    int ** r=data();
-    int ** t=data1();
-    List * list=lista(r,t);
-    un(list);*/
+     * Game Flow here
+     * */
 
     return 0;
 

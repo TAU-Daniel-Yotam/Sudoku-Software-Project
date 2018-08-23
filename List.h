@@ -1,5 +1,10 @@
 #ifndef SUDOKU_SOFTWARE_PROJECT_LIST_H
 #define SUDOKU_SOFTWARE_PROJECT_LIST_H
+
+#include <stdlib.h>
+#include <stdio.h>
+#include "Exceptions.h"
+
 typedef struct  Node {
     int ** data;
     int size;
@@ -26,5 +31,6 @@ int printList(List * list);
 int movePointer(List * list,int move);
 int deleteTail(List *list,Node * node);
 int addLast(List * list,int ** data,int size);
+void freeList(List*list);
 #endif
 

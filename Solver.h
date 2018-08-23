@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "Game.h"
+#include "main.c"
 
 #define SUBDIM1  (game->rows)
 #define SUBDIM2  (game->columns)

@@ -1,6 +1,6 @@
 
 #include "Solver.h"
-#include "main.c"
+
 
 int ILPSolve(Game*game,int**board){
     GRBenv   *env   = NULL;

@@ -21,9 +21,8 @@ int set(Game* game,int x,int y,int value){
         return 0;
     }
     listData[0]=x,listData[1]=y,listData[2]=game->board[x][y].value,listData[3]=value;
-    if(!listData[2]==listData[3])
+    if(listData[2]!=listData[3])
         addLast(game->list,listData,1);
-
     game->board[x][y].value=value;
     if(checkValid(game,x,y,value)) game->board[x][y].isValid=1;
     else game->board[x][y].isValid=0;
@@ -54,6 +53,7 @@ int hint(Game* game, int x, int y){
         printError(game,BOARD_UNSOLVEABLE_ERROR);
         return 0;
     }
+    printf("Hint: set cell to %d\n",board[x][y]);
     return 1;
 }
 
@@ -94,23 +94,37 @@ int checkRowColumn(Game* game, int x, int y, int value) {
     return 1;
 }
 
-int edit(char * filePath){
+int solve(Game* game, char * filePath){
     FILE * file;
-    Game * game;
+    file=fopen(filePath,"r");
+    if(file==NULL){
+        printError(NULL,SOLVE_IO_ERROR);
+        return 0;
+    }
+    readFromFile(game,file);
+    /*if(game->mode==2){
+        game->markError=1;
+    }*/
+    fclose(file);
+    return 1;
+}
+
+int edit(Game*game,char * filePath){
+    FILE * file;
     file=fopen(filePath,"r");
     if(file==NULL){
         printError(NULL,EDIT_IO_ERROR);
         return 0;
     }
-    game=readFromFile(file);
-    if(game->mode==2){
+    readFromFile(game,file);
+    /*if(game->mode==2){
         game->markError=1;
-    }
+    }*/
     fclose(file);
     return 1;
 }
 
-/*change and then move list pointer */
+/*change board and then move list pointer */
 int undo(Game * game) {
 
     /* need to complete: print board after changing the values and before printing the cells that changed */
@@ -137,7 +151,7 @@ int undo(Game * game) {
     return 1;
 }
 
-/*move list pointer and then change*/
+/*move list pointer and then change board*/
     int redo(Game *game) {
 
         /* need to complete: print board after changing the values and before printing the cells that changed */
@@ -180,7 +194,7 @@ int undo(Game * game) {
         fclose(file);
         return 1;
     }
-
+`
     int validate(Game *game) {
         return 0;
     }
@@ -208,41 +222,49 @@ int undo(Game * game) {
         return 1;
     }
 
-    Game *readFromFile(FILE *file) {
-        int a, b, num, i, j;
-        Cell **index;
-        Game *game;
-        fscanf(file, "%d", &a);
-        fscanf(file, "%d", &b);
-        index = calloc((unsigned int)(a * b), sizeof(Cell *));
-        for (i = 0; i < a * b; i++) {
-            index[i] = calloc((unsigned int)(a * b), sizeof(Cell));
+    int readFromFile(Game*game, FILE *file) {
+        int rows, columns, num, i, j;
+        Cell **board;
+        fscanf(file, "%d", &rows);
+        fscanf(file, "%d", &columns);
+        board = calloc((unsigned int)(rows * columns), sizeof(Cell *));
+        if(board==NULL){
+            printError(game,MEMORY_ALLOC_ERROR);
+            return 0;
         }
-        game = calloc(1, sizeof(Game));
-        game->columns = b;
-        game->rows = a;
-        game->board = index;
-        for (i = 0; i < a * b; i++) {
-            for (j = 0; j < a * b; j++) {
+        for (i = 0; i < rows * columns; i++) {
+            board[i] = calloc((unsigned int)(rows * columns), sizeof(Cell));
+            if(board[i]==NULL){
+                printError(game,MEMORY_ALLOC_ERROR);
+                return 0;
+            }
+            free(game->board[i]);
+        }
+        free(game->board);
+        game->columns = columns;
+        game->rows = rows;
+        game->board = board;
+        for (i = 0; i < rows * columns; i++) {
+            for (j = 0; j < rows * columns; j++) {
                 fscanf(file, "%d", &num);
                 game->board[i][j].value = num;
                 if (getc(file) == '.')
                     game->board[i][j].isFixed = 1;
             }
         }
-        return game;
+        return 1;
     }
 
     int writeToFile(Game *game, FILE *file) {
-        Cell **index;
+        Cell **board;
         int i, j;
         fprintf(file, "%d ", game->rows);
         fprintf(file, "%d\n", game->columns);
-        index = game->board;
+        board = game->board;
         for (i = 0; i < game->rows * game->columns; i++) {
             for (j = 0; j < game->rows * game->columns; j++) {
-                fprintf(file, "%d", index[i][j].value);
-                if (index[i][j].isFixed == 1)
+                fprintf(file, "%d", board[i][j].value);
+                if (board[i][j].isFixed == 1)
                     fprintf(file, ".");
                 if (j == (game->rows * game->columns - 1))
                     fprintf(file, "\n");
@@ -300,10 +322,12 @@ int undo(Game * game) {
         }
         /* complete:
          * add list node
-         * if count == 0 don't add list node
          * delete list nodes after this command*/
-        fillValues(game,cellsToFill,count);
-        updateCellValidity(game);
+        if(count>0){
+            addLast(game->list,cellsToFill,count);
+            fillValues(game,cellsToFill,count);
+            updateCellValidity(game);
+        }
         printBoard(game);
         return 1;
     }
@@ -452,6 +476,24 @@ int undo(Game * game) {
                 }
             }
         }
+    }
+
+    void exitGame(Game*game){
+        int i;
+        freeGame(game);
+    }
+
+    void freeGame(Game*game){
+        freeBoard(game);
+        freeList(game->list);
+    }
+
+    void freeBoard(Game*game){
+        int i;
+        for(i=0;i<game->rows*game->columns;i++){
+            free(game->board[i]);
+        }
+        free(game->board);
     }
 
 
