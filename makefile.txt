@@ -1,0 +1,26 @@
+CC = gcc
+OBJS = main.o Game.o Solver.o MainAux.o Parser.o Exceptions.o List.o
+EXEC = sudoku-console
+COMP_FLAG = -ansi -Wall -Wextra \
+-Werror -pedantic-errors
+GUROBI_COMP = -I/usr/local/lib/gurobi563/include
+GUROBI_LIB = -L/usr/local/lib/gurobi563/lib -lgurobi56
+
+$(EXEC): $(OBJS)
+	$(CC) $(OBJS) $(GUROBI_LIB)  -o $@ -lm
+Game.o: Game.c Game.h MainAux.h Solver.h Exceptions.h List.h
+	$(CC) $(COMP_FLAG) -c $*.c
+main.o: main.c MainAux.h Game.h
+	$(CC) $(COMP_FLAG) $(GUROBI_COMP) -c $*.c
+MainAux.o: MainAux.c MainAux.h Game.h
+	$(CC) $(COMP_FLAG) -c $*.c
+Parser.o: Parser.c Parser.h Game.h
+	$(CC) $(COMP_FLAG) -c $*.c
+Solver.o: Solver.c Solver.h Game.h
+	$(CC) $(COMP_FLAG) -c $*.c
+Exceptions.o: Exceptions.c Exception.h Game.h
+	$(CC) $(COMP_FLAG) -c $*.c
+List.o: List.c List.h
+	$(CC) $(COMP_FLAG) -c $*.c
+clean:
+	rm -f $(OBJS) $(EXEC)
