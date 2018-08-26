@@ -22,7 +22,7 @@ void printError(Game*game,Exception e){
             printf("Error: the value should be 0 or 1\n");
             break;
         case VALUE_RANGE_ERROR:
-            printf("Error: value not in range 0-%d\n",game->columns*game->rows);
+            printf("Error: value not in range 0-%d\n",Line(game->blockWidth,game->blockHeight));
             break;
         case CELL_FIXED_ERROR:
             printf("Error: cell is fixed\n");

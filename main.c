@@ -4,12 +4,50 @@
 #include "Parser.h"
 #include "MainAux.h"
 #include "gurobi_c.h"
+#include "Exceptions.h"
 
 int main(){
+    int exit,eof,type;
     Game game;
+    game.mode=0;
     Command parsedCommand;
-    char* command;
+    char command[1024];
     printf("Sudoku\n------\n");
+    while (!exit){
+        eof=getInput(command,1024);
+        type=parseCommand(&game,command,&parsedCommand);
+        if (type==-1){
+            printError(&game,INVALID_COMMAND_ERROR);
+            continue;
+        }
+        switch(type){
+            case 1:
+                solve(&game,parsedCommand.strArg[0]);
+                break;
+            case 2:
+                edit(parsedCommand.strArg[0],&game);
+                break;
+            case 3:
+                mark_errors(&game,parsedCommand.intArgs[0]);
+                break;
+            case 4:
+                printBoard(&game);
+                break;
+            case 5:
+                set
+
+
+
+
+
+
+
+        }
+
+        }
+
+
+
 
     /*
      * Game Flow here

@@ -1,43 +1,6 @@
 
 #include "MainAux.h"
 
-void printDashes(int column,int row){
-    int j;
-    for ( j=0;j<4*column*row+column+1;j++){
-        printf("-");
-        if(j==(4*column*row+column))
-            printf("\n");
-    }
-}
-
-void printBoard(Game * game) {
-    int i, j;
-    Cell index;
-    for (i = 0; i < game->columns * game->rows; i++) {
-        if (!(i % game->columns))
-            printDashes(game->columns, game->rows);
-        for (j = 0; j < game->columns * game->rows; j++) {
-            if (!(j % game->rows))
-                printf("|");
-            index = game->board[i][j];
-            if (index.isFixed) {
-                printf(" %2d.", index.value);
-            } else if (!index.isValid && (game->markError||game->mode==2))
-                printf(" %2d*", index.value);
-            else {
-
-                if (index.value != 0) {
-                    printf(" %2d ", index.value);
-                } else {
-                    printf("    ");
-
-                }
-            }
-        }
-        printf("|\n");
-    }
-    printDashes(game->columns, game->rows);
-}
 
 int arrComp(int*a1, int size1, int*a2, int size2){
    int i;
@@ -72,24 +35,44 @@ int initArray(int*a, int size, int initValue){
     return 0;
 }
 
-int**copyBoard(Game*game){
-    int size,i,j;
-    int**board;
-    size=game->columns*game->rows;
-    board=(int**)calloc((unsigned int)size,sizeof(int*));
-    if(board==NULL){
-        printError(game,MEMORY_ALLOC_ERROR);
-        return NULL;
-    }
-    for(i=0;i<size;i++){
-        board[i]=(int*)calloc((unsigned int)size, sizeof(int));
-        if(board[i]==NULL){
-            printError(game,MEMORY_ALLOC_ERROR);
-            return NULL;
-        }
-        for(j=0;j<size;j++){
-            board[i][j]=game->board[i][j].value;
-        }
-    }
-    return board;
+
+/*int checkValid(Game* game, int x, int y, int value) {
+    if(!value) return 1;
+    return checkBlock(game, x, y, value) || checkRowColumn(game, x, y, value);
 }
+
+int checkBlock(Game* game, int x, int y, int value) {
+    int k, r, i=x, j=y,sign=0;
+    while (x%game->columns != 1)x--;
+    while (y%game->rows != 1)y--;
+    for (k = 0; k<game->rows; k++) {
+        for (r = 0; r<game->columns; r++) {
+            if (game->board[x][y].value == value && k!=j && r!=i){
+                sign=1;
+                game->board[x][y].isInValid=1;
+            }
+
+            x++;
+        }
+        y++;
+    }
+    return sign;
+}
+int checkRowColumn(Game* game, int x, int y, int value) {
+    int i,sign=0;
+    for(i=0;i<game->rows*game->columns;i++) {
+        if (i != y && game->board[x][i].value == value) {
+            sign = 1;
+            game->board[x][i].isInValid = 1;
+        }
+    }
+    for(i=0;i<game->columns;i++){
+        if(i!=x && game->board[i][y].value==value) {
+            game->board[i][y].isInValid=1;
+            sign=1;
+
+        }
+    }
+    return sign;
+}*/
+
