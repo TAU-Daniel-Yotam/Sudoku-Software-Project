@@ -6,7 +6,6 @@
 
 
 typedef enum Exception{
-    NO_ERROR,
     MEMORY_ALLOC_ERROR,
     INVALID_COMMAND_ERROR,
     CELL_FIXED_ERROR,

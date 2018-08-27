@@ -22,10 +22,10 @@ int main(){
         }
         switch(type){
             case 1:
-                solve(&game,parsedCommand.strArg[0]);
+                solve(&game,parsedCommand.strArg);
                 break;
             case 2:
-                edit(parsedCommand.strArg[0],&game);
+                edit(parsedCommand.strArg,&game);
                 break;
             case 3:
                 mark_errors(&game,parsedCommand.intArgs[0]);
@@ -34,8 +34,11 @@ int main(){
                 printBoard(&game);
                 break;
             case 5:
-                set
-
+                set(&game,parsedCommand.intArgs[0],parsedCommand.intArgs[1],parsedCommand.intArgs[2]);
+            case 15:
+                exitGame(&game);
+            default:
+                break;
 
 
 

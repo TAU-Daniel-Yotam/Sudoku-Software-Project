@@ -1,12 +1,10 @@
 
 #include "Game.h"
-#include "mainAux.h"
-#include "List.h"
-#include "gameAux.h"
+
 
 int solve(Game* game, char * filePath){
     FILE * file;
-    file=fopen(filePath,"r");
+    file = fopen(filePath,"r");
     if(file==NULL){
         printError(NULL,SOLVE_IO_ERROR);
         return 0;
@@ -19,7 +17,7 @@ int solve(Game* game, char * filePath){
 int edit(char * filePath,Game * game){
     FILE * file;
     if (filePath!=NULL) {
-        fopen(filePath, "r");
+        file = fopen(filePath, "r");
         if (file == NULL) {
             printError(NULL, EDIT_IO_ERROR);
         }
@@ -30,7 +28,9 @@ int edit(char * filePath,Game * game){
         initGame(game,2,1,3,3);
         game->board = createBoard(3, 3);
     }
+    return 1;
 }
+
 
 int mark_errors(Game* game, int arg){
     if(arg!=0 && arg!=1){
@@ -44,7 +44,7 @@ int mark_errors(Game* game, int arg){
 void printBoard(Game * game) {
     int i, j;
     Cell index;
-    for (i = 0; i < Line(game->blockWidth,game->blockHeight); i++) {
+    for (i = 0; i < DIM; i++) {
         if (!(i % game->blockHeight))
             printDashes(game->blockWidth, game->blockHeight);
         for (j = 0; j < game->blockWidth*game->blockHeight; j++) {
@@ -89,12 +89,12 @@ int set(Game* game,int x,int y,int value){
     return 1;
 }
 
-int validate(Game *game) {
-}
+/*int validate(Game *game) {
+}*/
 
 int generate(Game*game,int x,int y){
     int i,j,tries,removed;
-    int**listData;
+    int**listData,board;
     removed=0;
     if(!checkRange(game,x) || !checkRange(game,y)){
         printError(game,VALUE_RANGE_ERROR);
@@ -110,12 +110,13 @@ int generate(Game*game,int x,int y){
         printError(game,GENERATOR_FAILED_ERROR);
         return 0;
     }
-    ILPSolve(game); /* need to implement */
+    board = copyBoard(game);
+    ILPSolve(game,board); /* need to implement */
 
-    while(removed < Line(game->blockWidth,game->blockHeight)*Line(game->blockHeight,game->blockWidth)-y){
+    while(removed < DIM*DIM-y){
         do {
-            i = rand() % Line(game->blockWidth,game->blockHeight);
-            j = rand() % Line(game->blockWidth,game->blockHeight);
+            i = rand() % DIM;
+            j = rand() % DIM;
         } while (!game->board[i][j].value);
         game->board[i][j].value=0;
     }
@@ -161,8 +162,8 @@ int redo(Game *game) {
     game->list->pointer = game->list->pointer->next;
     for (i = 0; i < game->list->pointer->size; i++) {
         move = game->list->pointer->data[i];
-        from = (move[2] == 0 ? '_' : move[2] + '0');
-        to = (move[3] == 0 ? '_' : move[3] + '0');
+        from = (char)(move[2] == 0 ? '_' : move[2] + '0');
+        to = (char)(move[3] == 0 ? '_' : move[3] + '0');
         game->board[move[0]][move[1]].value = move[3];
         if(i==0) printBoard(game);
         printf("Redo %d,%d: from %c to %c\n", move[0], move[1], to, from);
@@ -218,13 +219,15 @@ int hint(Game* game, int x, int y){
 }
 
 int numSolution(Game * game){
-
+    return 1;
 }
 
 int** autofill(Game*game){
     int num_val[2]={0};
+    unsigned int count;
     int**cellsToFill=NULL;
-    int i,j,first=1,count=0;
+    int i,j,first=1;
+    count=0;
     if(!checkError(game)){
         printError(game,ERRONEOUS_BOARD_ERROR);
         return 0;
@@ -236,9 +239,15 @@ int** autofill(Game*game){
                 if(num_val[0]==1) {
                     if(first){
                         cellsToFill=(int**)calloc(++count, sizeof(int*));
-                        if(cellsToFill==NULL) printError(game,MEMORY_ALLOC_ERROR);
+                        if(cellsToFill==NULL) {
+                            printError(game,MEMORY_ALLOC_ERROR);
+                            return NULL;
+                        }
                         cellsToFill[count-1]=(int*)calloc(4, sizeof(int)); /* 0:x,1:y,2:from,3:to */
-                        if(cellsToFill[count-1]==NULL) printError(game,MEMORY_ALLOC_ERROR);
+                        if(cellsToFill[count-1]==NULL) {
+                            printError(game,MEMORY_ALLOC_ERROR);
+                            return NULL;
+                        }
                         cellsToFill[count-1][0]=i;
                         cellsToFill[count-1][1]=j;
                         cellsToFill[count-1][2]=0;
@@ -247,9 +256,15 @@ int** autofill(Game*game){
                     }
                     else{
                         cellsToFill=(int**)realloc(cellsToFill,++count);
-                        if(cellsToFill==NULL) printError(game,MEMORY_ALLOC_ERROR);
+                        if(cellsToFill==NULL) {
+                            printError(game,MEMORY_ALLOC_ERROR);
+                            return NULL;
+                        }
                         cellsToFill[count-1]=(int*)calloc(4, sizeof(int)); /* 0:x,1:y,2:from,3:to */
-                        if(cellsToFill[count-1]==NULL) printError(game,MEMORY_ALLOC_ERROR);
+                        if(cellsToFill[count-1]==NULL) {
+                            printError(game,MEMORY_ALLOC_ERROR);
+                            return NULL;
+                        }
                         cellsToFill[count-1][0]=i;
                         cellsToFill[count-1][1]=j;
                         cellsToFill[count-1][2]=0;
@@ -275,10 +290,10 @@ int reset(Game *game) {
         deleteAtPosition(game->list, game->list->length - 1);
     }
     printf("Board reset\n");
+    return 1;
 }
 
 void exitGame(Game*game){
-    int i;
     freeGame(game);
 }
 

@@ -1,16 +1,16 @@
 
-#include "List.h"
+#ifndef SUDOKU_SOFTWARE_PROJECT_GAME_H
+#define SUDOKU_SOFTWARE_PROJECT_GAME_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Exceptions.h"
 #include "MainAux.h"
 #include "Solver.h"
-
-#ifndef SUDOKU_SOFTWARE_PROJECT_GAME_H
-
-
-#define DIM(x,y) (x)*(y)
-#define SUDOKU_SOFTWARE_PROJECT_GAME_H
+#include "mainAux.h"
+#include "gameAux.h"
+#include "List.h
+#define DIM ((game->blockHeight)*(game->blockWidth))
 
 typedef struct Cell{
     int value;
@@ -24,11 +24,12 @@ typedef struct Cell{
  */
 typedef struct Game{
     int blockHeight,blockWidth; /*num of rows and columns in a single block*/
-    Cell ** board;
+    struct Cell ** board;
     int mode;
     int markError;
-    List * list;
+    struct List * list;
 }Game;
+
 
 int     solve(Game * game,char * filepath);
 int     edit(char * filePath,Game * game);
@@ -44,6 +45,13 @@ int     hint(Game * game,int x,int y);
 int     numSolution(Game * game)
 int**   autofill(Game*game);
 int     reset(Game * game);
-void    exitGame(Game*game);
+void    exitGame(Game*game);;
+
+
+
 
 #endif
+
+
+
+

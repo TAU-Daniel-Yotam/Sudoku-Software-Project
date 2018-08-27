@@ -22,7 +22,7 @@ void printError(Game*game,Exception e){
             printf("Error: the value should be 0 or 1\n");
             break;
         case VALUE_RANGE_ERROR:
-            printf("Error: value not in range 0-%d\n",Line(game->blockWidth,game->blockHeight));
+            printf("Error: value not in range 0-%d\n",DIM);
             break;
         case CELL_FIXED_ERROR:
             printf("Error: cell is fixed\n");
@@ -54,8 +54,8 @@ void printError(Game*game,Exception e){
         case BOARD_UNSOLVEABLE_ERROR:
             printf("Error: board is unsolvable\n");
             break;
-        //case ILP_ERROR://need to complete
-            /*printf("Error: File doesn't exist or cannot be opened\n");
-            break;*/
+        case ILP_ERROR:
+            printf("Error: Gurobi error");
+            break;
     }
 }
