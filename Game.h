@@ -9,7 +9,7 @@
 #include "Solver.h"
 #include "MainAux.h"
 #include "GameAux.h"
-#include "List.h
+#include "List.h"
 #define SUBDIM1 (game->blockHeight)
 #define SUBDIM2 (game->blockWidth)
 #define DIM ((SUBDIM1)*(SUBDIM2))

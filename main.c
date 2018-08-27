@@ -9,9 +9,9 @@
 int main(){
     int exit,eof,type;
     Game game;
-    game.mode=0;
     Command parsedCommand;
     char command[1024];
+    game.mode=0;
     printf("Sudoku\n------\n");
     while (!exit){
         eof=getInput(command,1024);
