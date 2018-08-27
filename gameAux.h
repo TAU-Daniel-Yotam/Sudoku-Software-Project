@@ -1,6 +1,6 @@
 #ifndef SUDOKU_SOFTWARE_PROJECT_GAMEAUX_H
 #define SUDOKU_SOFTWARE_PROJECT_GAMEAUX_H
-#include "game.h"
+#include "Game.h"
 
 
 int     readFromFile(Game * game, FILE * file);

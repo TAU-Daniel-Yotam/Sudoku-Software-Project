@@ -7,8 +7,8 @@
 #include "Exceptions.h"
 #include "MainAux.h"
 #include "Solver.h"
-#include "mainAux.h"
-#include "gameAux.h"
+#include "MainAux.h"
+#include "GameAux.h"
 #include "List.h
 #define SUBDIM1 (game->blockHeight)
 #define SUBDIM2 (game->blockWidth)
