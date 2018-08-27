@@ -10,7 +10,9 @@
 #include "mainAux.h"
 #include "gameAux.h"
 #include "List.h
-#define DIM ((game->blockHeight)*(game->blockWidth))
+#define SUBDIM1 (game->blockHeight)
+#define SUBDIM2 (game->blockWidth)
+#define DIM ((SUBDIM1)*(SUBDIM2))
 
 typedef struct Cell{
     int value;

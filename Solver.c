@@ -1,11 +1,11 @@
 
 #include "Solver.h"
 
+int addConstrains();
 
 int ILPSolve(Game*game,int**board){
     GRBenv   *env   = NULL;
     GRBmodel *model = NULL;
-    char      inputline[100];
     int       ind[DIM];
     double    val[DIM];
     double    lb[DIM*DIM*DIM];
@@ -15,7 +15,6 @@ int ILPSolve(Game*game,int**board){
     char     *cursor;
     int       optimstatus;
     double    objval;
-    int       zero = 0;
     int       i, j, v, ig, jg, count;
     int       error = 0;
 
@@ -92,7 +91,7 @@ int ILPSolve(Game*game,int**board){
         }
     }
 
-    /* Each value must appear once in each subgrid */
+    /* Each value must appear once in each block */
 
     for (v = 0; v < DIM; v++) {
         for (ig = 0; ig < SUBDIM1; ig++) {

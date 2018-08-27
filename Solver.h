@@ -8,9 +8,9 @@
 #include "Game.h"
 #include "main.c"
 
-#define SUBDIM1  (game->rows)
+/*#define SUBDIM1  (game->rows)
 #define SUBDIM2  (game->columns)
-#define DIM    (SUBDIM1*SUBDIM2)
+#define DIM    (SUBDIM1*SUBDIM2)*/
 
 int ILPSolve(Game*game,int**board);
 

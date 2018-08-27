@@ -193,13 +193,18 @@ int checkEmpty(Game*game){
     }
     return 1;
 }
+
 void createValuesArray(Game*game,int x,int y,int* values){
     int i=1,j=0;
     for(;i<DIM;i++){
-        if(checkValid(game,x,y,i)){
+        game->board[x][y].value=i;
+        checkBlock(game,x,y)*checkRow(game,y)*checkColumns(game,x);
+        if(!game->board[x][y].isInValid){
             values[j]=i;
             j++;
         }
+        game->board[x][y].value=0;
+        checkBlock(game,x,y)*checkRow(game,y)*checkColumns(game,x);
     }
 }
 
@@ -284,7 +289,7 @@ int countPossibleValues(Game*game,int*num_val,int x, int y){
     num_val[0]=0;
     num_val[1]=0;
     for(i=1;i<=game->DIM;i++){
-        if(checkInvalid(game,x,y,i)){
+        if(!checkInvalid(game,x,y,i)){
             if(first){
                 num_val[1]=i;
                 first=0;
