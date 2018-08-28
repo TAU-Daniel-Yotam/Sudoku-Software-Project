@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "Solver.h"
 #include "Exceptions.h"
+#include "main.c"
 
 /*#define SUBDIM1  (game->rows)
 #define SUBDIM2  (game->columns)
