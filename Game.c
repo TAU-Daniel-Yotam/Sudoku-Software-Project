@@ -218,9 +218,9 @@ int hint(Game* game, int x, int y){
     return 1;
 }
 
-int numSolution(Game * game){
+/*int numSolution(Game * game){
     return 1;
-}
+}*/
 
 int** autofill(Game*game){
     int num_val[2]={0};
