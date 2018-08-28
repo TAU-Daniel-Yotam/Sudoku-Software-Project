@@ -9,6 +9,7 @@ int main(){
     char command[1024];
     game.mode=0;
     printf("Sudoku\n------\n");
+    exit=0;
     while (!exit){
         getInput(command,1024);
         type=parseCommand(&game,command,&parsedCommand);
