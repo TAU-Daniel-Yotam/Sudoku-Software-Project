@@ -1,4 +1,4 @@
-#include "gameAux.h"
+#include "GameAux.h"
 
 int readFromFile2(FILE *file,Game * game,int mode,int markError) {
     int a, b, num, i, j;
@@ -288,7 +288,7 @@ int countPossibleValues(Game*game,int*num_val,int x, int y){
     int i,first=1;
     num_val[0]=0;
     num_val[1]=0;
-    for(i=1;i<=game->DIM;i++){
+    for(i=1;i<=DIM;i++){
         if(!checkInvalid(game,x,y,i)){
             if(first){
                 num_val[1]=i;
@@ -312,7 +312,7 @@ void fillValues(Game*game,int**values,int size){
 
 void updateCellValidity(Game*game){
     int i,j;
-    for (i=0;i<game->DIM;i++) {
+    for (i=0;i<DIM;i++) {
         checkRow(game, i);
     }
     for ( j=0;j<DIM;j++) {

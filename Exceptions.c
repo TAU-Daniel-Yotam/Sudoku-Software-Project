@@ -4,7 +4,7 @@
 
 #include "Exceptions.h"
 
-void printError(Game*game,Exception e){
+void printError(struct Game*game,Exception e){
     switch(e){
         case MEMORY_ALLOC_ERROR:
             printf("Error: memory could not be allocated\nExiting...");

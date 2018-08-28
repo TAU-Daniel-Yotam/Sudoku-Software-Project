@@ -1,6 +1,6 @@
 #ifndef SUDOKU_SOFTWARE_PROJECT_GAMEAUX_H
 #define SUDOKU_SOFTWARE_PROJECT_GAMEAUX_H
-#include "Game.h"
+#include "Exceptions.h"
 
 
 int     readFromFile(Game * game, FILE * file);
@@ -21,7 +21,7 @@ int     fillXvalues(Game*game,int x);
 int     checkError(Game *game);
 int     writeToFile(Game *game, FILE *file);
 int   **copyBoard(Game*game);
-int    countPossibleValues(Game*game,int*num_val,int x, int y);
+int     countPossibleValues(Game*game,int*num_val,int x, int y);
 void    fillValues(Game*game,int**values,int size);
 void    updateCellValidity(Game*game);
 void    freeGame(Game*game);

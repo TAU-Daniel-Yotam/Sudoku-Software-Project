@@ -1,6 +1,11 @@
 
-#include "Solver.h"
+#ifndef MAIN
+#define MAIN
 
+#include "Solver.h"
+#include "main.c"
+
+#endif
 int addConstrains();
 
 int ILPSolve(Game*game,int**board){

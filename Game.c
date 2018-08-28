@@ -94,7 +94,7 @@ int set(Game* game,int x,int y,int value){
 
 int generate(Game*game,int x,int y){
     int i,j,tries,removed;
-    int**listData,board;
+    int ** listData, **board;
     removed=0;
     if(!checkRange(game,x) || !checkRange(game,y)){
         printError(game,VALUE_RANGE_ERROR);

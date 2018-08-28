@@ -14,9 +14,9 @@ typedef struct  Node {
 
 
 typedef struct List{
-    Node * head;
-    Node * tail;
-    Node * pointer;
+    struct Node * head;
+    struct Node * tail;
+    struct Node * pointer;
     int length;
 } List;
 
@@ -32,6 +32,7 @@ int movePointer(List * list,int move);*/
 int deleteTail(List *list,Node * node);
 int addLast(List * list,int ** data,int size);
 void freeList(List*list);
+void freeNode(Node*n);
 
 
 #endif

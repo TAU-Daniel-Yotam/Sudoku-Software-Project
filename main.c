@@ -1,10 +1,7 @@
 
-
 #include "Game.h"
 #include "Parser.h"
-#include "MainAux.h"
 #include "gurobi_c.h"
-#include "Exceptions.h"
 
 int main(){
     int exit,eof,type;

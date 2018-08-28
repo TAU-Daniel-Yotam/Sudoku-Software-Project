@@ -1,7 +1,7 @@
 
 #ifndef SUDOKU_SOFTWARE_PROJECT_PARSER_H
 #define SUDOKU_SOFTWARE_PROJECT_PARSER_H
-#include "Game.h"
+#include "Exceptions.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

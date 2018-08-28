@@ -2,14 +2,6 @@
 #ifndef SUDOKU_SOFTWARE_PROJECT_GAME_H
 #define SUDOKU_SOFTWARE_PROJECT_GAME_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "Exceptions.h"
-#include "MainAux.h"
-#include "Solver.h"
-#include "MainAux.h"
-#include "GameAux.h"
-#include "List.h"
 #define SUBDIM1 (game->blockHeight)
 #define SUBDIM2 (game->blockWidth)
 #define DIM ((SUBDIM1)*(SUBDIM2))
@@ -32,6 +24,11 @@ typedef struct Game{
     struct List * list;
 }Game;
 
+#include "List.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "Solver.h"
+#include "GameAux.h"
 
 int     solve(Game * game,char * filepath);
 int     edit(char * filePath,Game * game);
@@ -44,10 +41,10 @@ int     undo(Game * game);
 int     redo(Game * game);
 int     save(Game *game, char *path);
 int     hint(Game * game,int x,int y);
-int     numSolution(Game * game)
+int     numSolution(Game * game);
 int**   autofill(Game*game);
 int     reset(Game * game);
-void    exitGame(Game*game);;
+void    exitGame(Game*game);
 
 
 
