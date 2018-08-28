@@ -73,11 +73,11 @@ int set(Game* game,int x,int y,int value){
     int* listData=calloc(4, sizeof(int)); /* 0:x,1:y,2:from,3:to */
     if(!checkRange(game,x) || !checkRange(game,y) || !checkRange(game,value)){
         printError(game,VALUE_RANGE_ERROR);
-        return NULL;
+        return 0;
     }
     if(game->mode==1 && game->board[x][y].isFixed){
         printError(game,CELL_FIXED_ERROR);
-        return NULL;
+        return 0;
     }
     listData[0]=x,listData[1]=y,listData[2]=game->board[x][y].value,listData[3]=value;
    addLast(game->list,&listData,1);
