@@ -14,7 +14,7 @@ int solve(Game* game, char * filePath){
     return 1;
 }
 
-int edit(char * filePath,Game * game){
+int edit(Game * game, char * filePath){
     FILE * file;
     if (filePath!=NULL) {
         file = fopen(filePath, "r");

@@ -22,7 +22,7 @@ int main(){
                 solve(&game,parsedCommand.strArg);
                 break;
             case 2:
-                edit(parsedCommand.strArg,&game);
+                edit(&game,parsedCommand.strArg);
                 break;
             case 3:
                 mark_errors(&game,parsedCommand.intArgs[0]);

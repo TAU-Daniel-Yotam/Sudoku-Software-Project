@@ -31,7 +31,7 @@ typedef struct Game{
 #include "GameAux.h"
 
 int     solve(Game * game,char * filepath);
-int     edit(char * filePath,Game * game);
+int     edit(Game * game, char * filePath);
 int     mark_errors(Game* game, int arg);
 void    printBoard(Game* game);
 int     set(Game* game,int x,int y,int value);
