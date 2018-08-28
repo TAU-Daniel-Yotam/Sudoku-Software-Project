@@ -7,7 +7,7 @@
 #include <string.h>
 #include "Solver.h"
 #include "Exceptions.h"
-#include "main.c"
+#include "gurobi_c.h"
 
 /*#define SUBDIM1  (game->rows)
 #define SUBDIM2  (game->columns)

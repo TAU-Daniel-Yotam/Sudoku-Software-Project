@@ -1,7 +1,6 @@
 
 #include "Game.h"
 #include "Parser.h"
-#include "gurobi_c.h"
 
 int main(){
     int exit,eof,type;
