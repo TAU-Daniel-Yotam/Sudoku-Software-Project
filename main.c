@@ -3,14 +3,14 @@
 #include "Parser.h"
 
 int main(){
-    int exit,eof,type;
+    int exit,type;
     Game game;
     Command parsedCommand;
     char command[1024];
     game.mode=0;
     printf("Sudoku\n------\n");
     while (!exit){
-        eof=getInput(command,1024);
+        getInput(command,1024);
         type=parseCommand(&game,command,&parsedCommand);
         if (type==-1){
             printError(&game,INVALID_COMMAND_ERROR);
