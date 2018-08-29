@@ -35,6 +35,11 @@ int initArray(int*a, int size, int initValue){
     return 0;
 }
 
+int checkWinningGame(Game*game){
+    if(game!=NULL) return 1;
+    return 0;
+}
+
 
 /*int checkValid(Game* game, int x, int y, int value) {
     if(!value) return 1;
