@@ -2,25 +2,26 @@
 
 #include "Solver.h"
 int addConstrains();
+void allocateArrays(Game*game,int*,double*,double*,char*,char**,char*);
 
 int ILPSolve(Game*game,int**board){
     GRBenv   *env   = NULL;
     GRBmodel *model = NULL;
-    int       ind[DIM];
-    double    val[DIM];
-    double    lb[DIM*DIM*DIM];
-    char      vtype[DIM*DIM*DIM];
-    char     *names[DIM*DIM*DIM];
-    char      namestorage[10*DIM*DIM*DIM];
-    char     *cursor;
-    int       optimstatus;
-    double    objval;
-    int       i, j, v, ig, jg, count;
-    int       error = 0;
+    int       *ind=NULL;
+    double    *val=NULL;
+    double    *lb=NULL;
+    char      *vtype=NULL;
+    char     **names=NULL;
+    char      *namestorage=NULL;
+    char      *cursor;
+    int        optimstatus;
+    double     objval;
+    int        i, j, v, ig, jg, count;
+    int        error = 0;
 
+    allocateArrays(game,ind,val,lb,vtype,names,namestorage);
 
     /* Create an empty model */
-
     cursor = namestorage;
     for (i = 0; i < DIM; i++) {
         for (j = 0; j < DIM; j++) {
@@ -156,4 +157,17 @@ int ILPSolve(Game*game,int**board){
     GRBfreeenv(env);
 
     return 0;
+}
+
+void allocateArrays(Game*game,int*ind,double*val,double*lb,char*vtype,char**names,char*namestorage){
+    ind=(int*)calloc(DIM, sizeof(int));
+    val=(double*)calloc(DIM, sizeof(double));
+    lb=(double*)calloc(DIM*DIM*DIM, sizeof(double));
+    vtype=(char*)calloc(DIM*DIM*DIM, sizeof(char));
+    names=(char**)calloc(DIM*DIM*DIM, sizeof(char*));
+    namestorage=(char*)calloc(10*DIM*DIM*DIM, sizeof(char));
+
+    if(ind==NULL || val==NULL || lb==NULL || vtype==NULL || names==NULL || namestorage==NULL){
+        printError(game,MEMORY_ALLOC_ERROR);
+    }
 }
