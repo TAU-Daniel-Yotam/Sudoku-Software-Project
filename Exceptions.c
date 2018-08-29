@@ -51,7 +51,7 @@ void printError(struct Game*game,Exception e){
         case CELL_HAS_VALUE_ERROR:
             printf("Error: cell already contains a value\n");
             break;
-        case BOARD_UNSOLVEABLE_ERROR:
+        case BOARD_UNSOLVABLE_ERROR:
             printf("Error: board is unsolvable\n");
             break;
         case ILP_ERROR:

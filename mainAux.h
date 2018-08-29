@@ -11,5 +11,6 @@ void printArray(void*a, int size);
 int arrComp(int*a1, int size1, int*a2, int size2);
 int**copyBoard(Game*game);
 void freeMemory(void ** array,int size,int size2);
+int checkWinningGame(Game*game);
 
 #endif 
