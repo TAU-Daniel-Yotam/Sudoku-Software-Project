@@ -8,14 +8,18 @@
 #include "gameAux.h"
 
 int main() {
-    int exit, eof, type, erroneous, valid;
+    int exit, type, erroneous, valid;
+    /*int eof;*/
     Game game;
-    game.mode = 0;
     Command parsedCommand;
     char command[1024];
+    game.mode = 0;
+    erroneous=0;
+    exit=0;
     printf("Sudoku\n------\n");
     while (!exit) {
-        eof = getInput(command, 1024);
+        /*eof = getInput(command, 1024);*/
+        getInput(command, 1024);
         type = parseCommand(&game, command, &parsedCommand);
         if (type == -1) {
             printError(&game, INVALID_COMMAND_ERROR);
@@ -67,7 +71,7 @@ int main() {
                 redo(&game);
                 break;
             case 10:
-                save(&game, parsedCommand.strArg[0]);
+                save(&game, parsedCommand.strArg);
                 break;
             case 11:
                 hint(&game, parsedCommand.intArgs[0], parsedCommand.intArgs[1]);
@@ -81,6 +85,8 @@ int main() {
             case 15:
                 exitGame(&game);
                 exit = 1;
+                break;
+            default:
                 break;
         }
 
