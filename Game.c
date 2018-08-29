@@ -211,7 +211,7 @@ int hint(Game* game, int x, int y){
     }
     board=copyBoard(game);
     if(!ILPSolve(game,board)){
-        printError(game,BOARD_UNSOLVEABLE_ERROR);
+        printError(game,BOARD_UNSOLVABLE_ERROR);
         return 0;
     }
     printf("Hint: set cell to %d\n",board[x][y]);

@@ -22,15 +22,15 @@ int main() {
             continue;
         }
         if (erroneous && type != 8) {
-            printError(&game, PUZZLE_SOLUTION_ERROR);
+            printf("Puzzle solution erroneous\n");
             continue;
         }
         switch (type) {
             case 1:
-                solve(&game, parsedCommand.strArg[0]);
+                solve(&game, parsedCommand.strArg);
                 break;
             case 2:
-                edit(parsedCommand.strArg[0], &game);
+                edit(&game,parsedCommand.strArg);
                 break;
             case 3:
                 mark_errors(&game, parsedCommand.intArgs[0]);
@@ -44,7 +44,7 @@ int main() {
                     printf("Puzzle solved successfully\n");
                     game.mode = 0;
                 } else if (checkWinningGame(&game) && !validate(&game)) {
-                    printError(&game, PUZZLE_SOLUTION_ERROR);
+                    printf("Puzzle solution erroneous\n");
                     erroneous = 1;
                 }
                 break;
