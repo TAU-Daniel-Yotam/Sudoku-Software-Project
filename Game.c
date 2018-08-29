@@ -96,6 +96,7 @@ int generate(Game*game,int x,int y){
     int i,j,tries,removed;
     int ** listData, **board;
     removed=0;
+    listData=NULL;
     if(!checkRange(game,x) || !checkRange(game,y)){
         printError(game,VALUE_RANGE_ERROR);
         return 0;
