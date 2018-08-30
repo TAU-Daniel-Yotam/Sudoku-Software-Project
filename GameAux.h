@@ -3,7 +3,9 @@
 #include "Exceptions.h"
 
 
+/*
 int     readFromFile(Game * game, FILE * file);
+*/
 int     checkBoard(Game * game);
 void    initGame(Game * game,int mode,int markError,int blockHeight,int blockWidth);
 int     readFromFile2(FILE *file,Game * game,int mode,int markError);
