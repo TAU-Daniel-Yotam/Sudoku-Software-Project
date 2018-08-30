@@ -72,6 +72,7 @@ int deleteTail(List *list,Node * node){
         freeNode(temp);
         list->length--;
     }
+    return 1;
 }
 
 int printList(List * list){
