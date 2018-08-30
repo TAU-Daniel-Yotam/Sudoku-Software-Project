@@ -146,7 +146,7 @@ int parseCommand(Game* game, char*command, Command* parsedCommand){
 }
 
 int parseArg(Command* command, char* arg, int argIndex){
-    int i;
+    unsigned int i;
     switch(command->type){
         case 3:
         case 5:
