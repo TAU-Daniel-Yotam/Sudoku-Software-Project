@@ -5,7 +5,7 @@
 #include "MainAux.h"
 #include "gurobi_c.h"
 #include "Exceptions.h"
-#include "gameAux.h"
+#include "GameAux.h"
 
 int main() {
     int exit, type, erroneous, valid;
