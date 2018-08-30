@@ -102,10 +102,11 @@ int movePointer(List * list,int isRight) {
 }
 
 int addLast(List * list,int ** data,int size){
+    Node * node;
     if(list->pointer!=list->tail){
         deleteTail(list,list->pointer);
     }
-    Node *  node=createNode(data,size);
+    node=createNode(data,size);
     if(list->length==0)
         list->head=node;
     else{
@@ -127,7 +128,6 @@ void freeNode(Node*n){
 }
 
 void freeList(List*list){
-    int i;
     while(list->head!=NULL){
         freeNode(list->head);
     }
