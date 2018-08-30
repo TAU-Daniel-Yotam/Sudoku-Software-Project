@@ -18,7 +18,7 @@ Parser.o: Parser.c Parser.h Exceptions.h
 	$(CC) $(COMP_FLAG) -c $*.c
 Solver.o: Solver.c Solver.h Exceptions.h
 	$(CC) $(COMP_FLAG) -c $*.c
-Exceptions.o: Exceptions.c Exception.h Game.h
+Exceptions.o: Exceptions.c Exceptions.h Game.h
 	$(CC) $(COMP_FLAG) -c $*.c
 List.o: List.c List.h Exceptions.h
 	$(CC) $(COMP_FLAG) -c $*.c
