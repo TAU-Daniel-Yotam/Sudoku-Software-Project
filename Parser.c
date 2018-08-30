@@ -2,6 +2,7 @@
 #include "Parser.h"
 int isInt(char c);
 int parseInt(char* str, int size);
+int parseArg(Command* command, char* arg, int argIndex);
 int validateArgs(Command* c);
 
 
@@ -129,7 +130,7 @@ int parseCommand(Game* game, char*command, Command* parsedCommand){
             }
         }
         else if(i<=parsedCommand->numArgs){
-            parseArg(game,parsedCommand,word,i);
+            parseArg(parsedCommand,word,i);
         }
         i++;
         word=strtok(NULL," \t\r\n");
@@ -144,7 +145,7 @@ int parseCommand(Game* game, char*command, Command* parsedCommand){
     return parsedCommand->type;
 }
 
-int parseArg(Game* game, Command* command, char* arg, int argIndex){
+int parseArg(Command* command, char* arg, int argIndex){
     int i;
     switch(command->type){
         case 3:
@@ -157,13 +158,16 @@ int parseArg(Game* game, Command* command, char* arg, int argIndex){
                     break;
                 }
             }
-            command->intArgs[argIndex-1]=parseInt(arg,strlen(arg));
+            command->intArgs[argIndex-1]=parseInt(arg,(int)strlen(arg));
             break;
         case 1:
         case 2:
         case 10:
             command->strArg=arg;
+        default:
+            break;
     }
+    return 1;
 }
 
 int isInt(char c){
@@ -186,8 +190,6 @@ int parseInt(char* str, int size){
 }
 
 int validateArgs(Command* c){
-    int i;
-    int a[3]={-1};
     switch(c->type){
         case 1: case 10:
             if(c->strArg==NULL || c->intArgs!=NULL) return 0;
@@ -200,6 +202,8 @@ int validateArgs(Command* c){
             break;
         case 4: case 6: case 8: case 9: case 12: case 13: case 14: case 15:
             if(c->strArg!=NULL || c->intArgs!=NULL) return 0;
+        default:
+            break;
     }
     return 1;
 }
