@@ -89,8 +89,10 @@ int set(Game* game,int x,int y,int value){
     return 1;
 }
 
-/*int validate(Game *game) {
-}*/
+int validate(Game *game) {
+    if(game->mode==1) return 1;
+    return 0;
+}
 
 int generate(Game*game,int x,int y){
     int i,j,tries,removed;
