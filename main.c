@@ -4,7 +4,6 @@
 #include "Parser.h"
 #include "MainAux.h"
 #include "gurobi_c.h"
-#include "Exceptions.h"
 #include "GameAux.h"
 
 int main() {
