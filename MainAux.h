@@ -9,5 +9,5 @@ void printdashes(int row,int line);
 void printBoard(Game* game);
 void printArray(void*a, int size);
 int arrComp(int*a1, int size1, int*a2, int size2);
-
+int checkWinningGame(Game*game);
 #endif 
